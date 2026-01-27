@@ -61,4 +61,35 @@ document.addEventListener('DOMContentLoaded', () => {
       updateNavBg();
     });
   });
+
+  const title = document.getElementById('title');
+
+  home.addEventListener('mousemove', (event) => {
+    const rect = title.getBoundingClientRect();
+
+    //calculates text center
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    //mouse cursor acts as light source
+    const offsetX = (centerX - event.pageX) / 10000;
+    const offsetY = (centerY - event.pageY) / 10000;
+
+    title.style.textShadow = `
+      ${-offsetX.toFixed(3) * 0.5}em ${-offsetY.toFixed(3) * 0.5}em 0 white,
+      ${offsetX.toFixed(4)}em ${offsetY.toFixed(4)}em 0 rgba(93,93,93, 0.5),
+      ${offsetX.toFixed(4) * 2}em ${offsetY.toFixed(4) * 2}em 0 rgba(93,93,93, 0.4),
+      ${offsetX.toFixed(4) * 3}em ${offsetY.toFixed(4) * 3}em 0 rgba(93,93,93, 0.3),
+      ${offsetX.toFixed(4) * 4}em ${offsetY.toFixed(4) * 4}em 0 rgba(93,93,93, 0.2)
+    `;
+
+    // for black-mode
+    // title.style.color = `black`;
+    // title.style.textShadow = `
+    //   ${offsetX.toFixed(4) * 1}em ${offsetY.toFixed(4) * 1}em 0 #0c2ffb,
+    //   ${offsetX.toFixed(4) * 2}em ${offsetY.toFixed(4) * 2}em 0 #2cfcfd ,
+    //   ${-offsetX.toFixed(4) * 1}em ${-offsetY.toFixed(4) * 1}em 0 #fb203b,
+    //   ${-offsetX.toFixed(4) * 2}em ${-offsetY.toFixed(4) * 2}em 0 #fefc4b
+    // `;
+  });
 });

@@ -8,6 +8,9 @@
     <script src="script.js"></script>
   </head>
   <body>
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="gradient.mp4" type="video/mp4" />
+    </video>
     <header>
       <h1>Amyruth</h1>
       <nav class="nav">
@@ -19,75 +22,81 @@
       </nav>
 
       <!-- dark/light mode -->
-      <button>mode</button>
+      <button></button>
     </header>
     <main>
       <section id="home">
-        <h1>Amyruth Rubio</h1>
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati quidem consequuntur
-          tenetur culpa tempore veritatis incidunt et aperiam facere nostrum provident doloribus
-          quae, necessitatibus sunt laudantium perferendis, voluptate maiores ipsam.
-        </p>
-        <div>
-          <a href="#work">Explore Work</a>
-          <a href="#contact">Connect</a>
+        <div class="container-center">
+          <h1 id="title">Hello there! I'm Amyruth Rubio</h1>
+          <h2>Software Engineer</h2>
+          <p>
+            I'm a student at Marcy Lab School learning to create beautiful, accessible websites. I'm
+            passionate about clean code and great user experiences.
+          </p>
+          <div id="home-buttons">
+            <a href="#work">Explore Work</a>
+            <a href="#contact">Connect</a>
+          </div>
         </div>
       </section>
       <section id="about">
-        <h2>About</h2>
-        <div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odit placeat eos doloremque
-            iste vero obcaecati commodi facere provident doloribus, officiis voluptate accusantium,
-            ipsam asperiores sed rerum autem, dignissimos reprehenderit nisi?
-          </p>
-          <div id="tech-stack">
-            <h3>Tech Stack</h3>
-            <ul>
-              <li>JavaScript</li>
-              <li>Python</li>
-              <li>HTML/CSS</li>
-              <li>React</li>
-              <li>Node.js</li>
-              <li>Git</li>
-            </ul>
+        <div class="container-center">
+          <h2>About</h2>
+          <div id="about-content-container">
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odit placeat eos doloremque
+              iste vero obcaecati commodi facere provident doloribus, officiis voluptate
+              accusantium, ipsam asperiores sed rerum autem, dignissimos reprehenderit nisi?
+            </p>
+            <div id="tech-stack">
+              <h3>Tech Stack</h3>
+              <ul>
+                <li>JavaScript</li>
+                <li>Python</li>
+                <li>HTML/CSS</li>
+                <li>React</li>
+                <li>Node.js</li>
+                <li>Git</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
       <section id="work">
-        <h2>Work</h2>
-        <div id="card-container">
-          <div class="card">
-            <img src="" alt="" />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita illo ipsum illum
-              doloremque aperiam ullam numquam dolorem dolore facere architecto voluptate veniam,
-              quo assumenda, nulla iste maiores rem? Eveniet, maxime.
-            </p>
-            <ul>
-              <li>JavaScript</li>
-              <li>HTML/CSS</li>
-            </ul>
-            <div>
-              <a href="#">Live</a>
-              <a href="#">Code</a>
+        <div class="container-center">
+          <h2>Work</h2>
+          <div id="card-container">
+            <div class="card">
+              <img src="" alt="" />
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita illo ipsum illum
+                doloremque aperiam ullam numquam dolorem dolore facere architecto voluptate veniam,
+                quo assumenda, nulla iste maiores rem? Eveniet, maxime.
+              </p>
+              <ul>
+                <li>JavaScript</li>
+                <li>HTML/CSS</li>
+              </ul>
+              <div>
+                <a href="#">Live</a>
+                <a href="#">Code</a>
+              </div>
             </div>
-          </div>
-          <div class="card">
-            <img src="" alt="" />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita illo ipsum illum
-              doloremque aperiam ullam numquam dolorem dolore facere architecto voluptate veniam,
-              quo assumenda, nulla iste maiores rem? Eveniet, maxime.
-            </p>
-            <ul>
-              <li>JavaScript</li>
-              <li>HTML/CSS</li>
-            </ul>
-            <div>
-              <a href="#">Live</a>
-              <a href="#">Code</a>
+            <div class="card">
+              <img src="" alt="" />
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita illo ipsum illum
+                doloremque aperiam ullam numquam dolorem dolore facere architecto voluptate veniam,
+                quo assumenda, nulla iste maiores rem? Eveniet, maxime.
+              </p>
+              <ul>
+                <li>JavaScript</li>
+                <li>HTML/CSS</li>
+              </ul>
+              <div>
+                <a href="#">Live</a>
+                <a href="#">Code</a>
+              </div>
             </div>
           </div>
         </div>
@@ -95,26 +104,28 @@
     </main>
 
     <footer id="contact">
-      <h2>Contact</h2>
-      <p>
-        Have a project in mind? I'd love to hear about it. Let's create something meaningful
-        together.
-      </p>
-      <div>
-        <form action="">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" />
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" />
-          <label for="message">Message</label>
-          <textarea name="message" id="message" rows="5"></textarea>
-          <button type="submit">Send</button>
-        </form>
-        <div id="other-contact-info">
-          <h3>Other ways to connect</h3>
-          <p>email</p>
-          <p>github</p>
-          <p>linkedin</p>
+      <div class="container-center">
+        <h2>Contact</h2>
+        <p>
+          Have a project in mind? I'd love to hear about it. Let's create something meaningful
+          together.
+        </p>
+        <div id="contact-content-container">
+          <form action="">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" />
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" />
+            <label for="message">Message</label>
+            <textarea name="message" id="message" rows="5"></textarea>
+            <button type="submit">Send</button>
+          </form>
+          <div id="other-contact-info">
+            <h3>Other ways to connect</h3>
+            <p>email</p>
+            <p>github</p>
+            <p>linkedin</p>
+          </div>
         </div>
       </div>
     </footer>
