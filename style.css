@@ -20,8 +20,17 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 ul {
   list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color);
 }
 
 /* body and bg gradient */
@@ -104,8 +113,6 @@ nav::before {
 nav a {
   height: 100%;
   padding-inline: 10px;
-  color: var(--text-color);
-  text-decoration: none;
 }
 
 .nav-bg {
@@ -162,14 +169,15 @@ nav a {
 #home-buttons li,
 .card-links li,
 #contact button {
-  padding: 10px;
+  padding: 0;
+  margin: 0;
   color: var(--text-color);
   background-color: var(--bg-white-color);
-  text-decoration: none;
   border: 1px solid var(--white-color);
   border-radius: 6px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
   transition: all 0.5s ease;
 }
 
@@ -196,16 +204,17 @@ nav a {
 }
 
 #home-buttons li:hover,
-.card-links li:hover,
-#contact button:hover {
+.card-links li:hover {
   scale: 1.2;
   border: 1px solid var(--text-color);
 }
 
 #home-buttons a,
 .card-links a {
-  color: var(--text-color);
-  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
 
 /* h2 */
@@ -338,10 +347,10 @@ h2 {
 /* work section */
 
 #card-container {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 1rem;
-  place-items: center;
 }
 
 .card {
@@ -427,20 +436,25 @@ h2 {
   background-color: transparent;
   border-color: 1px solid var(--text-color);
   border-radius: 5px;
-  cursor: pointer;
+}
+
+.card-links a,
+#contact button {
   padding: 0.5rem 2rem;
 }
 
 /* contact section */
 
+#contact .container-center {
+  min-height: 110vh;
+}
+
 #contact a {
-  color: var(--text-color);
   transition: all 0.5s ease;
 }
 
 #contact a:hover {
   letter-spacing: 1px;
-  color: var(--accent-color);
 }
 
 form {
@@ -452,6 +466,16 @@ form {
 input,
 textarea {
   padding: 0.5rem;
+}
+
+#find-me-info li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+#find-me-info img {
+  height: 1rem;
 }
 
 /* tablet */

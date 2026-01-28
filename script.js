@@ -19,15 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let scrollIndex = sections.findIndex(
       (section, i) =>
-        currentScrollPosition >= section.offsetTop &&
-        (!sections[i + 1] || currentScrollPosition < sections[i + 1].offsetTop),
+        currentScrollPosition >= section.offsetTop - 100 &&
+        (!sections[i + 1] || currentScrollPosition < sections[i + 1].offsetTop - 100),
     );
 
     if (scrollIndex === -1) scrollIndex = 0;
 
-    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-      scrollIndex = sections.length - 1;
-    }
+    console.log(scrollIndex);
 
     bg.style.width = `${links[scrollIndex].getBoundingClientRect().width}px`;
     bg.style.transform = `translateX(${links[scrollIndex].getBoundingClientRect().left - nav.getBoundingClientRect().left}px)`;
@@ -37,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // hides header on scroll
     const currentScrollY = window.scrollY;
 
-    console.log(currentScrollY);
     if (currentScrollY > lastScrollY && currentScrollY > 80) {
       header.classList.add('is-hidden');
     } else {
