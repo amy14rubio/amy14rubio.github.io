@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    //mouse cursor acts as light source
+    //tighten or loosen cursor offset
     const offsetX = (centerX - event.pageX) / 10000;
     const offsetY = (centerY - event.pageY) / 10000;
 
