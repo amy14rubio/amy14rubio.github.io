@@ -390,7 +390,7 @@ h2 {
   display: flex;
   white-space: nowrap;
   font-size: 0.9rem;
-  animation: marquee 15s infinite linear;
+  animation: marquee 15s linear infinite;
   animation-delay: calc(var(--i) * -3s);
 }
 
