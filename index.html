@@ -3,85 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Minimal Portfolio</title>
+    <title>Portfolio</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
   </head>
   <body>
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="./assets/gradient.mp4" type="video/mp4" />
+    </video>
     <header>
-      <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
+      <h1>Amyruth</h1>
+      <nav class="nav">
+        <span class="nav-bg"></span>
+        <ul>
+          <li>
+            <a href="#home">Home</a>
+          </li>
+          <li>
+            <a href="#about">About</a>
+          </li>
+          <li>
+            <a href="#work">Work</a>
+          </li>
+          <li>
+            <a href="#contact">Contact</a>
+          </li>
+        </ul>
       </nav>
+
+      <!-- dark/light mode -->
+      <button></button>
     </header>
     <main>
       <section id="home">
-        <h1>Amyruth Rubio</h1>
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati quidem consequuntur
-          tenetur culpa tempore veritatis incidunt et aperiam facere nostrum provident doloribus
-          quae, necessitatibus sunt laudantium perferendis, voluptate maiores ipsam.
-        </p>
-        <div>
-          <a href="#work">Explore Work</a>
-          <a href="#contact">Connect</a>
+        <div class="container-center">
+          <h1 id="title">Hello there! I'm Amyruth Rubio</h1>
+          <h2>Software Engineer</h2>
+          <p>
+            I'm a student at Marcy Lab School learning to create beautiful, accessible websites.
+          </p>
+          <ul id="home-buttons">
+            <li>
+              <a href="#work">Explore Work</a>
+            </li>
+            <li>
+              <a href="#contact">Connect</a>
+            </li>
+          </ul>
         </div>
       </section>
       <section id="about">
-        <h2>About</h2>
-        <div>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odit placeat eos doloremque
-            iste vero obcaecati commodi facere provident doloribus, officiis voluptate accusantium,
-            ipsam asperiores sed rerum autem, dignissimos reprehenderit nisi?
-          </p>
-          <div id="tech-stack">
-            <h3>Tech Stack</h3>
-            <ul>
-              <li>JavaScript</li>
-              <li>Python</li>
-              <li>HTML/CSS</li>
-              <li>React</li>
-              <li>Node.js</li>
-              <li>Git</li>
-            </ul>
+        <div class="container-center">
+          <h2>About</h2>
+          <div id="about-content-container">
+            <div id="about-text">
+              <p>I'm a software engineering fellow at The Marcy Lab School in Brooklyn, NY.</p>
+              <p>
+                When I’m not coding, you’ll find me listening to podcasts, making music, spending
+                time with my family and church community, or recharging with something creative.
+              </p>
+            </div>
+            <div id="tech-stack">
+              <h3>Tech Stack</h3>
+              <ul>
+                <li>HTML/CSS</li>
+                <li>JavaScript</li>
+                <li>Python</li>
+                <li>React</li>
+                <li>Node.js</li>
+                <li>Git</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
       <section id="work">
-        <h2>Work</h2>
-        <div id="card-container">
-          <div class="card">
-            <img src="" alt="" />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita illo ipsum illum
-              doloremque aperiam ullam numquam dolorem dolore facere architecto voluptate veniam,
-              quo assumenda, nulla iste maiores rem? Eveniet, maxime.
-            </p>
-            <ul>
-              <li>JavaScript</li>
-              <li>HTML/CSS</li>
-            </ul>
-            <div>
-              <a href="#">Live</a>
-              <a href="#">Code</a>
+        <div class="container-center">
+          <h2>Work</h2>
+          <div id="card-container">
+            <div class="card">
+              <div class="marquee-container">
+                <ul class="marquee" style="--i: 1">
+                  <li>TECH STACK ></li>
+                  <li>JavaScript</li>
+                  <li>Node.js</li>
+                  <li>CLI</li>
+                </ul>
+              </div>
+              <ul class="card-img-container">
+                <li>
+                  <img src="./assets/rock-paper-scissors1.png" alt="rock paper scissors game" />
+                </li>
+                <li>
+                  <img src="./assets/rock-paper-scissors2.png" alt="rock paper scissors game" />
+                </li>
+              </ul>
+              <h3>Rock Paper Scissors Game</h3>
+              <ul class="card-links">
+                <li>
+                  <a href="https://github.com/amy14rubio/rock-paper-scissors" target="_blank">Live</a>
+                </li>
+                <li>
+                  <a href="https://github.com/amy14rubio/rock-paper-scissors" target="_blank">Code</a>
+                </li>
+              </ul>
             </div>
-          </div>
-          <div class="card">
-            <img src="" alt="" />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita illo ipsum illum
-              doloremque aperiam ullam numquam dolorem dolore facere architecto voluptate veniam,
-              quo assumenda, nulla iste maiores rem? Eveniet, maxime.
-            </p>
-            <ul>
-              <li>JavaScript</li>
-              <li>HTML/CSS</li>
-            </ul>
-            <div>
-              <a href="#">Live</a>
-              <a href="#">Code</a>
+            <div class="card">
+              <div class="marquee-container">
+                <ul class="marquee" style="--i: 0">
+                  <li>TECH STACK ></li>
+                  <li>Node.js</li>
+                  <li>React.js</li>
+                  <li>HTML/CSS</li>
+                  <li>Tailwind</li>
+                  <li>JavaScript</li>
+                </ul>
+              </div>
+              <ul class="card-img-container">
+                <li>
+                  <img src="./assets/quiz-app1.png" alt="quiz app game" />
+                </li>
+                <li>
+                  <img src="./assets/quiz-app2.png" alt="quiz app game" />
+                </li>
+              </ul>
+              <h3>Quiz App</h3>
+              <ul class="card-links">
+                <li>
+                  <a href="https://amys-quiz-app.web.app/" target="_blank">Live</a>
+                </li>
+                <li>
+                  <a href="https://github.com/amy14rubio/swe-project-1-cli-app" target="_blank">Code</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -89,26 +143,33 @@
     </main>
 
     <footer id="contact">
-      <h2>Contact</h2>
-      <p>
-        Have a project in mind? I'd love to hear about it. Let's create something meaningful
-        together.
-      </p>
-      <div>
-        <form action="">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" />
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" />
-          <label for="message">Message</label>
-          <textarea name="message" id="message" rows="5"></textarea>
-          <button type="submit">Send</button>
-        </form>
-        <div id="other-contact-info">
-          <h3>Other ways to connect</h3>
-          <p>email</p>
-          <p>github</p>
-          <p>linkedin</p>
+      <div class="container-center">
+        <h2>Contact</h2>
+        <div id="contact-content-container">
+          <form action="https://formspree.io/f/mreqvagw" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required/>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required/>
+            <label for="message">Message</label>
+            <textarea name="message" id="message" rows="5"></textarea>
+            <button type="submit">Send</button>
+          </form>
+          <div id="find-me-info">
+            <h3>Find Me</h3>
+            <ul>
+              <li>
+                <a href="mailto:amyruth.rubio@gmail.com" target="_blank">Email</a>
+              </li>
+              <li>
+                <a href="https://github.com/amy14rubio" target="_blank">Github</a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/amyruth-rubio/" target="_blank">Linkedin</a>
+              </li>
+            </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>
