@@ -160,10 +160,12 @@ nav a {
   border: 1px solid white;
 }
 
-#home-buttons {
+#home-buttons,
+.card-links,
+#find-me-info ul {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 #home-buttons li,
@@ -350,6 +352,7 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -423,13 +426,6 @@ h2 {
 }
 
 /* card links */
-
-.card-links,
-#find-me-info ul {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
 
 .card-links li,
 #contact button {
@@ -531,6 +527,10 @@ textarea {
 
   #about-content-container {
     gap: 9.5rem;
+  }
+
+  .card {
+    max-width: 50vw;
   }
 
   #tech-stack {
