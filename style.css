@@ -77,22 +77,30 @@ header.is-hidden {
   transform: translateY(-200%);
 }
 
-header button {
-  border-radius: 10px;
+#dark-mode {
+  border-radius: 30px;
   background-color: var(--bg-white-color);
   color: var(--text-color);
-  border: 1px solid white;
+  border: none;
   box-shadow: 0 0 3px var(--light-color);
-  padding: 0.5rem;
   cursor: pointer;
+}
+
+#dark-mode img {
+  height: 1rem;
+  margin: 0.5rem 0.65rem;
+  transition: all 0.5s ease;
+}
+#dark-mode img:hover {
+  scale: 1.1;
 }
 
 /* nav */
 
 nav {
   position: relative;
-  padding: 0.65rem 0;
-  font-size: 0.8rem;
+  padding: 0.5rem 0;
+  font-size: 0.7rem;
 }
 
 nav ul {
@@ -112,7 +120,7 @@ nav::before {
 
 nav a {
   height: 100%;
-  padding-inline: 10px;
+  padding-inline: 0.4rem;
 }
 
 .nav-bg {
@@ -386,11 +394,15 @@ h2 {
   padding: 0.5rem 2rem;
 }
 
+.marquee-container li:last-child {
+  border-right: none;
+}
+
 .marquee {
   display: flex;
   white-space: nowrap;
   font-size: 0.9rem;
-  animation: marquee 15s linear infinite;
+  animation: marquee 20s linear infinite;
   animation-delay: calc(var(--i) * -3s);
 }
 
@@ -399,7 +411,7 @@ h2 {
     transform: translateX(100%);
   }
   to {
-    transform: translateX(-100%);
+    transform: translateX(-200%);
   }
 }
 
@@ -474,12 +486,75 @@ textarea {
   height: 1rem;
 }
 
+/* dark-mode */
+
+body.dark-mode::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  filter: brightness(3);
+  z-index: -5;
+  pointer-events: none;
+}
+
+body.dark-mode {
+  --white-color: #fffefb;
+  --bg-white-color: rgba(255, 255, 255, 0.3);
+  --text-color: #fffefb;
+  --light-color: #bababa;
+  --accent-color: #333333;
+}
+
+body.dark-mode #title {
+  -webkit-text-stroke: 1px var(--light-color);
+}
+
+body.dark-mode h2 {
+  text-shadow: 2px 1px 0px var(--accent-color);
+}
+
+body.dark-mode #tech-stack {
+  border: 8px solid var(--accent-color);
+  background-color: var(--accent-color);
+  background-blend-mode: lighten;
+}
+
+body.dark-mode #tech-stack::before {
+  border: 2px solid var(--text-color);
+}
+
+body.dark-mode #tech-stack li {
+  color: var(--light-color);
+}
+
+body.dark-mode #tech-stack li:hover {
+  color: var(--white-color);
+}
+
+body.dark-mode .nav-bg {
+  background-color: var(--accent-color);
+}
+
+body.dark-mode #find-me-info img,
+body.dark-mode #dark-mode img {
+  filter: brightness(3);
+}
+
 /* tablet */
 
 @media (min-width: 768px) {
   .container-center {
     min-height: 90vh;
     font-size: 1.3rem;
+  }
+
+  nav {
+    padding: 0.65rem 0;
+  }
+
+  nav a {
+    padding: 0.8rem;
   }
 
   header h1,
