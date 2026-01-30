@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
   </head>
   <body>
     <video class="bg-video" autoplay muted loop playsinline>
@@ -30,9 +29,9 @@
           </li>
         </ul>
       </nav>
-
-      <!-- dark/light mode -->
-      <button></button>
+      <button id="dark-mode">
+        <img src="./assets/dark-mode.svg" alt="dark mode icon">
+      </button>
     </header>
     <main>
       <section id="home">
@@ -84,10 +83,15 @@
             <div class="card">
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 1">
+                  <li>𐙚 ‧₊˚ ⋅</li>
+                  <li>STATUS ></li>
+                  <li>Complete</li>
+                  <li>‧₊˚ ⋅</li>
                   <li>TECH STACK ></li>
                   <li>JavaScript</li>
                   <li>Node.js</li>
                   <li>CLI</li>
+                  <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
               <ul class="card-img-container">
@@ -99,6 +103,7 @@
                 </li>
               </ul>
               <h3>Rock Paper Scissors Game</h3>
+              <p>Play the classic player-vs-computer game with fun ASCII art animations</p>
               <ul class="card-links">
                 <li>
                   <a href="https://github.com/amy14rubio/rock-paper-scissors" target="_blank">Live</a>
@@ -111,12 +116,17 @@
             <div class="card">
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 0">
+                  <li>𐙚 ‧₊˚ ⋅</li>
+                  <li>STATUS ></li>
+                  <li>In Progress...</li>
+                  <li>‧₊˚ ⋅</li>
                   <li>TECH STACK ></li>
                   <li>Node.js</li>
                   <li>React.js</li>
                   <li>HTML/CSS</li>
                   <li>Tailwind</li>
                   <li>JavaScript</li>
+                  <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
               <ul class="card-img-container">
@@ -128,12 +138,46 @@
                 </li>
               </ul>
               <h3>Quiz App</h3>
+              <p>A quiz game with CLI, React, and web versions where users can create quizzes and share them with friends</p>
               <ul class="card-links">
                 <li>
                   <a href="https://amys-quiz-app.web.app/" target="_blank">Live</a>
                 </li>
                 <li>
                   <a href="https://github.com/amy14rubio/swe-project-1-cli-app" target="_blank">Code</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="marquee-container">
+                <ul class="marquee" style="--i: 2">
+                  <li>𐙚 ‧₊˚ ⋅</li>
+                  <li>STATUS ></li>
+                  <li>Complete</li>
+                  <li>‧₊˚ ⋅</li>
+                  <li>TECH STACK ></li>
+                  <li>HTML/CSS</li>
+                  <li>JavaScript</li>
+                  <li>‧₊˚ ⋅ 𐙚</li>
+                </ul>
+              </div>
+              <ul class="card-img-container">
+                <li>
+                  <img src="./assets/birthday-game1.png" alt="birthday game" />
+                </li>
+                <li>
+                  <img src="./assets/birthday-game2.png" alt="birthday game" />
+                </li>
+              </ul>
+              <h3>Birthday Arcade Game</h3>
+              <p>A time-based arcade game where you score points collecting gifts</p>
+
+              <ul class="card-links">
+                <li>
+                  <a href="https://happy-birthday-arcade-game.web.app/" target="_blank">Live</a>
+                </li>
+                <li>
+                  <a href="https://github.com/amy14rubio/happy-birthday-arcade-game" target="_blank">Code</a>
                 </li>
               </ul>
             </div>
@@ -164,11 +208,11 @@
               </li>
               <li>
                 <img src="./assets/github.svg" alt="github icon">
-                <a href="https://github.com/amy14rubio" target="_blank">Github</a>
+                <a href="https://github.com/amy14rubio" target="_blank">GitHub</a>
               </li>
               <li>
                 <img src="./assets/linkedin.svg" alt="linkedin icon">
-                <a href="https://www.linkedin.com/in/amyruth-rubio/" target="_blank">Linkedin</a>
+                <a href="https://www.linkedin.com/in/amyruth-rubio/" target="_blank">LinkedIn</a>
               </li>
             </ul>
             </ul>
@@ -176,5 +220,8 @@
         </div>
       </div>
     </footer>
+
+    <script src="script.js"></script>
+
   </body>
 </html>
