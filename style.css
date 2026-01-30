@@ -52,59 +52,6 @@ body {
   pointer-events: none;
 }
 
-body.dark-mode::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  filter: brightness(3);
-  z-index: -5;
-  pointer-events: none;
-}
-
-body.dark-mode {
-  --white-color: #fffefb;
-  --bg-white-color: rgba(255, 255, 255, 0.3);
-  --text-color: #fffefb;
-  --light-color: #bababa;
-  --accent-color: #333333;
-}
-
-body.dark-mode #title {
-  -webkit-text-stroke: 1px var(--light-color);
-}
-
-body.dark-mode h2 {
-  text-shadow: 2px 1px 0px var(--accent-color);
-}
-
-body.dark-mode #tech-stack {
-  border: 8px solid var(--accent-color);
-  background-color: var(--accent-color);
-  background-blend-mode: lighten;
-}
-
-body.dark-mode #tech-stack::before {
-  border: 2px solid var(--text-color);
-}
-
-body.dark-mode #tech-stack li {
-  color: var(--light-color);
-}
-
-body.dark-mode #tech-stack li:hover {
-  color: var(--white-color);
-}
-
-body.dark-mode .nav-bg {
-  background-color: var(--accent-color);
-}
-
-body.dark-mode #find-me-info img,
-body.dark-mode #dark-mode img {
-  filter: brightness(3);
-}
-
 /* header */
 
 header {
@@ -537,6 +484,61 @@ textarea {
 
 #find-me-info img {
   height: 1rem;
+}
+
+/* dark-mode */
+
+body.dark-mode::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  filter: brightness(3);
+  z-index: -5;
+  pointer-events: none;
+}
+
+body.dark-mode {
+  --white-color: #fffefb;
+  --bg-white-color: rgba(255, 255, 255, 0.3);
+  --text-color: #fffefb;
+  --light-color: #bababa;
+  --accent-color: #333333;
+}
+
+body.dark-mode #title {
+  -webkit-text-stroke: 1px var(--light-color);
+}
+
+body.dark-mode h2 {
+  text-shadow: 2px 1px 0px var(--accent-color);
+}
+
+body.dark-mode #tech-stack {
+  border: 8px solid var(--accent-color);
+  background-color: var(--accent-color);
+  background-blend-mode: lighten;
+}
+
+body.dark-mode #tech-stack::before {
+  border: 2px solid var(--text-color);
+}
+
+body.dark-mode #tech-stack li {
+  color: var(--light-color);
+}
+
+body.dark-mode #tech-stack li:hover {
+  color: var(--white-color);
+}
+
+body.dark-mode .nav-bg {
+  background-color: var(--accent-color);
+}
+
+body.dark-mode #find-me-info img,
+body.dark-mode #dark-mode img {
+  filter: brightness(3);
 }
 
 /* tablet */

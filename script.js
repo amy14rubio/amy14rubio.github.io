@@ -1,4 +1,3 @@
-// document.addEventListener('DOMContentLoaded', () => {
 const nav = document.querySelector('.nav');
 const bg = document.querySelector('.nav-bg');
 const links = nav.querySelectorAll('a');
@@ -8,6 +7,7 @@ const work = document.getElementById('work');
 const contact = document.getElementById('contact');
 const header = document.querySelector('header');
 let lastScrollY = window.scrollY;
+const title = document.getElementById('title');
 const body = document.body;
 const toggle = document.getElementById('dark-mode');
 const icon = document.querySelector('img');
@@ -49,18 +49,7 @@ window.addEventListener('scroll', () => {
   updateNavBg();
 });
 
-toggle.addEventListener('click', () => {
-  body.classList.toggle('dark-mode');
-
-  if (isDarkMode()) {
-    icon.src = './assets/light-mode.svg';
-    icon.alt = 'light mode icon';
-  } else {
-    icon.src = './assets/dark-mode.svg';
-    icon.alt = 'dark mode icon';
-  }
-});
-
+//controls nav-bg hover behavior
 links.forEach((link) => {
   link.addEventListener('mouseenter', () => {
     const rect = link.getBoundingClientRect();
@@ -75,8 +64,20 @@ links.forEach((link) => {
   });
 });
 
-const title = document.getElementById('title');
+//toggle dark mode and light mode
+toggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
 
+  if (isDarkMode()) {
+    icon.src = './assets/light-mode.svg';
+    icon.alt = 'light mode icon';
+  } else {
+    icon.src = './assets/dark-mode.svg';
+    icon.alt = 'dark mode icon';
+  }
+});
+
+//main title shadow effect
 home.addEventListener('mousemove', (event) => {
   const rect = title.getBoundingClientRect();
 
