@@ -6,15 +6,16 @@ const about = document.getElementById('about');
 const work = document.getElementById('work');
 const contact = document.getElementById('contact');
 const header = document.querySelector('header');
-let lastScrollY = window.scrollY;
 const title = document.getElementById('title');
 const body = document.body;
 const toggle = document.getElementById('dark-mode');
 const icon = document.querySelector('img');
 const isDarkMode = () => body.classList.contains('dark-mode');
+let lastScrollY = window.scrollY;
+let isNavHovered = false;
 
 //initializes nav-bg
-bg.style.width = `${links[0].getBoundingClientRect().width}px`;
+bg.style.width = `${links[0].offsetWidth}px`;
 
 // controls nav-bg position as user scrolls through content
 const updateNavBg = () => {
@@ -29,10 +30,8 @@ const updateNavBg = () => {
 
   if (scrollIndex === -1) scrollIndex = 0;
 
-  console.log(scrollIndex);
-
-  bg.style.width = `${links[scrollIndex].getBoundingClientRect().width}px`;
-  bg.style.transform = `translateX(${links[scrollIndex].getBoundingClientRect().left - nav.getBoundingClientRect().left}px)`;
+  bg.style.width = `${links[scrollIndex].offsetWidth}px`;
+  bg.style.transform = `translateX(${links[scrollIndex].offsetLeft}px)`;
 };
 
 window.addEventListener('scroll', () => {
@@ -44,7 +43,10 @@ window.addEventListener('scroll', () => {
   } else {
     header.classList.remove('is-hidden');
   }
+
   lastScrollY = currentScrollY;
+
+  if (isNavHovered) return;
 
   updateNavBg();
 });
@@ -52,14 +54,13 @@ window.addEventListener('scroll', () => {
 //controls nav-bg hover behavior
 links.forEach((link) => {
   link.addEventListener('mouseenter', () => {
-    const rect = link.getBoundingClientRect();
-    const navRect = nav.getBoundingClientRect();
-
-    bg.style.width = `${rect.width}px`;
-    bg.style.transform = `translateX(${rect.left - navRect.left}px)`;
+    isNavHovered = true;
+    bg.style.width = `${link.offsetWidth}px`;
+    bg.style.transform = `translateX(${link.offsetLeft}px)`;
   });
 
   link.addEventListener('mouseleave', () => {
+    isNavHovered = false;
     updateNavBg();
   });
 });
