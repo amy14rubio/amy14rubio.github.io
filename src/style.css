@@ -311,7 +311,7 @@ h2 {
   transition: all 0.5s ease;
   border: 8px solid var(--text-color);
   padding: 20px;
-  background: url('./assets/tech-stack-bg.png');
+  background: url('/assets/tech-stack-bg.png');
   background-size: cover;
   background-color: var(--white-color);
   background-blend-mode: darken;

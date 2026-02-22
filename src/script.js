@@ -70,10 +70,10 @@ toggle.addEventListener('click', () => {
   body.classList.toggle('dark-mode');
 
   if (isDarkMode()) {
-    icon.src = './assets/light-mode.svg';
+    icon.src = '/assets/light-mode.svg';
     icon.alt = 'light mode icon';
   } else {
-    icon.src = './assets/dark-mode.svg';
+    icon.src = '/assets/dark-mode.svg';
     icon.alt = 'dark mode icon';
   }
 });
