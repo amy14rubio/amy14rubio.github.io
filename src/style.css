@@ -384,34 +384,34 @@ h2 {
 /* tech stack in work section marquee */
 
 .marquee-container {
+  display: flex;
+  /* gap: 5px; */
   background-color: var(--bg-white-color);
   width: 100%;
   overflow: hidden;
 }
 
 .marquee-container li {
-  border-right: 1px solid var(--accent-color);
-  padding: 0.5rem 2rem;
-}
-
-.marquee-container li:last-child {
-  border-right: none;
+  padding: 0.5rem;
 }
 
 .marquee {
   display: flex;
-  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 100%;
+  padding-right: 10vw;
   font-size: 0.9rem;
-  animation: marquee 20s linear infinite;
+  animation: marquee 15s linear infinite;
   animation-delay: calc(var(--i) * -3s);
 }
 
+.marquee-container:hover ul {
+  animation-play-state: paused;
+}
+
 @keyframes marquee {
-  from {
-    transform: translateX(100%);
-  }
   to {
-    transform: translateX(-200%);
+    transform: translateX(calc(-100%));
   }
 }
 
@@ -515,9 +515,9 @@ body.dark-mode h2 {
 }
 
 body.dark-mode #tech-stack {
+  color: var(--accent-color);
   border: 8px solid var(--accent-color);
-  background-color: var(--accent-color);
-  background-blend-mode: lighten;
+  background-blend-mode: difference;
 }
 
 body.dark-mode #tech-stack::before {
@@ -525,7 +525,7 @@ body.dark-mode #tech-stack::before {
 }
 
 body.dark-mode #tech-stack li {
-  color: var(--light-color);
+  color: var(--accent-color);
 }
 
 body.dark-mode #tech-stack li:hover {
