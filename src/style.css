@@ -307,7 +307,7 @@ h2 {
 
 #tech-stack {
   position: relative;
-  rotate: -2deg;
+  rotate: -4deg;
   transition: all 0.5s ease;
   border: 8px solid var(--text-color);
   padding: 20px;
@@ -318,7 +318,7 @@ h2 {
 }
 
 #tech-stack:hover {
-  rotate: 2deg;
+  rotate: 3deg;
 }
 
 #tech-stack::before {
@@ -385,7 +385,6 @@ h2 {
 
 .marquee-container {
   display: flex;
-  /* gap: 5px; */
   background-color: var(--bg-white-color);
   width: 100%;
   overflow: hidden;
@@ -411,7 +410,7 @@ h2 {
 
 @keyframes marquee {
   to {
-    transform: translateX(calc(-100%));
+    transform: translateX(-100%);
   }
 }
 
@@ -601,7 +600,7 @@ body.dark-mode #dark-mode img {
   }
 
   #about-content-container {
-    gap: 9.5rem;
+    gap: 7rem;
   }
 
   .card {

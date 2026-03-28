@@ -104,3 +104,11 @@ home.addEventListener('mousemove', (event) => {
   `;
   }
 });
+
+// email link
+const user = 'amyruth.rubio';
+const domain = 'gmail.com';
+const email = user + '@' + domain;
+
+const link = document.getElementById('email-link');
+link.href = 'mailto:' + email;
