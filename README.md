@@ -1,7 +1,5 @@
 # Portfolio
 
-## Reflection Questions
-
 ### Technical Concept Mastery
 
 One technical concept I developed greater mastery over was the use of the `::before` pseudo-element in CSS. My mental model of this concept is that `::before` allows you to create a styled element that exists before the content of a target element without altering the element’s main structure. This is useful for creating decorative overlays, backgrounds, or layered effects while keeping the HTML clean and maintaining the element’s original layout.
@@ -20,4 +18,6 @@ Finally, I styled the `text-shadow` property of the title element. The first sha
 
 ### AI Usage
 
-This project provided me an opportunity to build something with AI assistance. Check out my [AI Usage Document](https://docs.google.com/document/d/1nCg1vsm6g7sLwAA4lGUPGwLD-5Y2g_pe8AEdM1tnqEo/edit?usp=sharing) to see how I used AI on this project.
+This project provided me an opportunity to build with AI as a collaborative tool. I primarily used AI to implement stretch features, including advanced hover effects, scroll-based UI behavior, dynamic navigation, and CSS enhancements such as overlays and clip-path designs.
+
+Check out my [AI Usage Document](https://docs.google.com/document/d/1nCg1vsm6g7sLwAA4lGUPGwLD-5Y2g_pe8AEdM1tnqEo/edit?usp=sharing) to see the prompts, responses, and how I refined and integrated each solution.
