@@ -112,3 +112,14 @@ const email = user + '@' + domain;
 
 const link = document.getElementById('email-link');
 link.href = 'mailto:' + email;
+
+// safari low-power mode can block video autoplay
+const video = document.querySelector('.bg-video');
+
+document.addEventListener('DOMContentLoaded', () => {
+  // fallback to a static background image when playback fails
+  video.play().catch(() => {
+    video.style.display = 'none';
+    body.style.backgroundImage = `url('/assets/gradient-thumbnail.jpg')`;
+  });
+});
