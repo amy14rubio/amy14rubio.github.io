@@ -479,31 +479,31 @@ h2 {
 .signoff-line:nth-child(1) {
   position: absolute;
   top: 0;
-  left: 20%;
+  left: 37%;
 }
 
 .signoff-line:nth-child(2) {
   position: absolute;
   top: 3rem;
-  left: 30%;
+  left: 46%;
 }
 
 .signoff-line:nth-child(3) {
   position: absolute;
   top: 6rem;
-  left: 25%;
+  left: 34%;
 }
 
 .signoff-line:nth-child(4) {
   position: absolute;
   top: 9rem;
-  left: 15%;
+  left: 31%;
 }
 
 .signoff-line:nth-child(5) {
   position: absolute;
   top: 12rem;
-  left: 25%;
+  left: 36%;
 }
 
 #about-content-container {
@@ -1266,7 +1266,7 @@ html.custom-cursor-active * {
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 /* the plain idle glow — a separate element so its per-frame velocity-driven
@@ -1307,13 +1307,7 @@ html.custom-cursor-active * {
   border-radius: 999px;
   background: transparent;
   transform: translate(-50%, -50%);
-  transition:
-    width 0.22s ease,
-    height 0.22s ease,
-    max-width 0.22s ease,
-    padding 0.22s ease,
-    box-shadow 0.22s ease,
-    background-color 0.22s ease;
+  transition: all 0.22s ease;
 }
 
 #cursor-light.is-cta .cursor-core {
@@ -1322,9 +1316,14 @@ html.custom-cursor-active * {
   max-width: 200px;
   padding: 0 0.9rem;
   background: rgba(255, 254, 251, 0.96);
-  /* how far right/down the pill's center sits from the actual cursor point
-     — tune these two values to nudge its position */
-  transform: translate(calc(-50% + 28px), calc(-50% + 10px));
+  /* the % component of a transform is relative to the element's OWN size,
+     so a translateX of "-50% + Npx" re-centers around a fixed point as the
+     pill grows wider with longer labels — the near edge drifts toward the
+     cursor instead of staying put. Using a plain pixel offset (no %) pins
+     that edge at a fixed distance from the cursor regardless of label
+     length; only the far edge moves as the label grows. tune the pixel
+     values to nudge the pill's position. */
+  transform: translate(5px, calc(-50% + 5px));
   box-shadow:
     0 0 20px 2px rgba(255, 255, 255, 0.35),
     0 0 50px 3px rgba(255, 255, 255, 0.25),
@@ -1333,13 +1332,16 @@ html.custom-cursor-active * {
 
 /* near the right edge of the screen (e.g. the dark-mode toggle), cursor.js
    adds this class so the pill grows to the left instead of clipping off
-   the edge of the viewport — same idea, just the X offset flipped negative */
+   the edge of the viewport. -100% shifts the pill fully behind itself so
+   its RIGHT edge lands at the anchor point, then the extra -28px pushes
+   that edge a fixed distance further left — same "pin one edge, grow away
+   from it" idea as the normal state, just mirrored. */
 #cursor-light.is-cta.is-cta-flip .cursor-core {
-  transform: translate(calc(-50% - 28px), calc(-50% + 10px));
+  transform: translate(calc(-100% - 5px), calc(-50% + 5px));
 }
 
 #cursor-light.is-pressed .cursor-core {
-  transform: translate(-50%, -50%) scale(0.85);
+  transform: scale(0.95);
 }
 
 .cursor-label {

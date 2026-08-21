@@ -11,6 +11,17 @@
     />
   </head>
   <body>
+    <script>
+      // applies the right theme before first paint, so there's no flash of
+      // the wrong theme while script.js (a deferred module) is still loading
+      (function () {
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored ? stored === 'dark' : prefersDark) {
+          document.body.classList.add('dark-mode');
+        }
+      })();
+    </script>
     <div class="bg-gradient" aria-hidden="true">
       <div class="bg-blob bg-blob--pink"></div>
       <div class="bg-blob bg-blob--blue"></div>
@@ -197,12 +208,14 @@
                         /></a>
                       </li>
                       <li>
-                        <!-- placeholder: swap href once the demo user account link is ready -->
-                        <a href="#"><img src="/assets/demo.svg" alt="demo user" /></a>
+                        <a href="https://lead-dux.web.app/demo-stud" target="_blank"
+                          ><img src="/assets/demo.svg" alt="live demo user"
+                        /></a>
                       </li>
                       <li>
-                        <!-- placeholder: swap href once the demo organization link is ready -->
-                        <a href="#"><img src="/assets/demo.svg" alt="demo organization" /></a>
+                        <a href="https://lead-dux.web.app/demo-org" target="_blank"
+                          ><img src="/assets/demo.svg" alt="live demo organization"
+                        /></a>
                       </li>
                     </ul>
                   </div>
@@ -267,6 +280,11 @@
                           href="https://github.com/The-Marcy-Lab-School-Assignments/full-stack-project-remix-amy14rubio-1"
                           target="_blank"
                           ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="https://youtu.be/Tjt-DwteKbI?si=SimlRR7B8wIxwH-E" target="_blank"
+                          ><img src="/assets/demo.svg" alt="demo video"
                         /></a>
                       </li>
                     </ul>

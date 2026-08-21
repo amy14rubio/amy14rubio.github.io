@@ -83,24 +83,28 @@ export function initCustomCursor() {
 
   const resolveLabel = (el) => {
     if (el.id === 'email-link') return 'Say hello!';
-    if (el.id === 'dark-mode') return 'Toggle theme';
+    if (el.id === 'dark-mode') {
+      return document.body.classList.contains('dark-mode')
+        ? 'Joining the light side?'
+        : 'Joining the dark side?';
+    }
 
     if (el.closest('.card-links')) {
       const alt = el.querySelector('img')?.alt || '';
-      if (/github/i.test(alt)) return 'Code';
-      if (/demo user/i.test(alt)) return 'Demo user';
-      if (/demo organization/i.test(alt)) return 'Demo organization';
-      if (/demo/i.test(alt)) return 'Demo';
-      return 'Live';
+      if (/github/i.test(alt)) return 'See my code!';
+      if (/demo user/i.test(alt)) return 'Try the user demo!';
+      if (/demo organization/i.test(alt)) return 'Try the organization demo!';
+      if (/demo/i.test(alt)) return 'Watch the demo!';
+      return 'See it live!';
     }
 
     if (el.closest('#find-me-info')) {
-      return /github\.com/.test(el.href) ? 'Github' : 'Connect!';
+      return /github\.com/.test(el.href) ? "See what I'm building!" : "Let's Connect!";
     }
 
     if (el.tagName === 'BUTTON' && el.type === 'submit') return "Let's go!";
 
-    if (el.target === '_blank') return 'Visit';
+    if (el.target === '_blank') return 'Check it out!';
 
     return 'Click me!';
   };

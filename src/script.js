@@ -75,8 +75,17 @@ links.forEach((link) => {
 });
 
 //toggle dark mode and light mode
+// the inline anti-flash script in index.html may have already added
+// dark-mode before this module loaded (system preference or a saved
+// choice) — sync the icon to whatever theme actually ended up applied
+if (isDarkMode()) {
+  icon.src = '/assets/light-mode.svg';
+  icon.alt = 'light mode icon';
+}
+
 toggle.addEventListener('click', () => {
   body.classList.toggle('dark-mode');
+  localStorage.setItem('theme', isDarkMode() ? 'dark' : 'light');
 
   if (isDarkMode()) {
     icon.src = '/assets/light-mode.svg';
@@ -188,6 +197,18 @@ document.querySelectorAll('#signoff-lines > p.signoff-line').forEach((line, line
   });
 });
 
+// "enter"/"leave" mark a point on the FOOTER (the number) aligning with the
+// viewport's center — e.g. "center 50%" = the footer's own vertical center
+// reaching the middle of the screen. On mobile the footer takes up a much
+// bigger share of the (shorter) viewport, so the page often runs out of
+// scroll room before that point is reachable at all — freezing the scrub
+// partway, with some characters never reaching their resting position.
+// tablet/desktop keep the exact original markers; mobile targets points
+// much closer to the footer's own top edge instead, which are guaranteed to
+// scroll into alignment well before the page ends, while keeping the same
+// scrub distance (208px) so it still feels like a real scrub, not a snap
+const isMobile = !window.matchMedia('(min-width: 768px)').matches;
+
 animate(signoffChars, {
   translateX: (el) => [signoffCharOffsets.get(el), 0],
   duration: 1500,
@@ -195,8 +216,8 @@ animate(signoffChars, {
   delay: (el) => signoffCharDelays.get(el),
   autoplay: onScroll({
     target: footerSignoff,
-    enter: 'center -15%',
-    leave: 'center 50%',
+    enter: isMobile ? 'center -40%' : 'center -15%',
+    leave: isMobile ? 'center 10%' : 'center 50%',
     sync: true,
   }),
 });
