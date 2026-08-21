@@ -1,3 +1,10 @@
+import { animate, stagger, splitText, onScroll } from 'animejs';
+import { initScrollReveal } from './reveal.js';
+import { initCustomCursor } from './cursor.js';
+
+initScrollReveal();
+initCustomCursor();
+
 const nav = document.querySelector('.nav');
 const bg = document.querySelector('.nav-bg');
 const links = nav.querySelectorAll('a');
@@ -6,7 +13,9 @@ const about = document.getElementById('about');
 const work = document.getElementById('work');
 const contact = document.getElementById('contact');
 const header = document.querySelector('header');
-const title = document.getElementById('title');
+const title = document.querySelectorAll('.title');
+const heroEl = document.getElementById('hero');
+const taglineGroup = document.getElementById('tagline-group');
 const body = document.body;
 const toggle = document.getElementById('dark-mode');
 const icon = document.querySelector('img');
@@ -78,32 +87,192 @@ toggle.addEventListener('click', () => {
   }
 });
 
-//main title shadow effect
-home.addEventListener('mousemove', (event) => {
-  const rect = title.getBoundingClientRect();
+// hero intro: letters cascade in on load (plays once, at the start only)
+// splitText recursively processes a container's descendants, so splitting
+// #hero directly covers the h4/h1/h3 inside it in one call
+const heroChars = splitText(heroEl, { chars: { wrap: false } }).chars;
 
-  //calculates text center
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  //tighten or loosen cursor offset
-  const offsetX = (centerX - event.pageX) / 10000;
-  const offsetY = (centerY - event.pageY) / 10000;
-
-  title.style.textShadow = `
-      ${-offsetX.toFixed(3) * 0.5}em ${-offsetY.toFixed(3) * 0.5}em 0 white,
-      ${offsetX.toFixed(4)}em ${offsetY.toFixed(4)}em 0 rgba(93,93,93, 0.5),
-      ${offsetX.toFixed(4) * 2}em ${offsetY.toFixed(4) * 2}em 0 rgba(93,93,93, 0.4),
-      ${offsetX.toFixed(4) * 3}em ${offsetY.toFixed(4) * 3}em 0 rgba(93,93,93, 0.3),
-      ${offsetX.toFixed(4) * 4}em ${offsetY.toFixed(4) * 4}em 0 rgba(93,93,93, 0.2)
-    `;
-  if (isDarkMode()) {
-    title.style.textShadow = `
-    ${offsetX.toFixed(4) * 0.5}em ${offsetY.toFixed(4) * 0.5}em 0 #00c4c4,
-    ${-offsetX.toFixed(4) * 0.5}em ${-offsetY.toFixed(4) * 0.5}em 0 #c40034
-  `;
-  }
+heroChars.forEach((char) => {
+  char.style.opacity = '0';
+  char.style.transform = 'translateY(20px)';
 });
+
+heroEl.style.opacity = 1;
+
+animate(heroChars, {
+  translateY: [20, 0],
+  opacity: [0, 1],
+  duration: 600,
+  ease: 'outExpo',
+  delay: stagger(20),
+});
+
+// tagline: reveal one line at a time, letter by letter within each line,
+// scrubbed directly to scroll position — scrolling down plays it forward,
+// scrolling up rewinds it. Masking at the line level (one clip box per
+// whole phrase, not per word/letter) avoids clipping the slanted, connecting
+// strokes of adjacent characters — Shrikhand's letterforms lean into each
+// other enough that even a word-level mask cut into them at the edges.
+//
+// splitText's own `lines` option always defers the actual split to
+// doc.fonts.ready.then(...) internally, even if fonts are already loaded
+// (its readiness flag starts false unconditionally) — reading .chars right
+// after calling it grabs the pre-split (empty) array, one microtask too
+// early, silently orphaning the whole animation. So the line-level mask is
+// built by hand here instead: split for chars only (fully synchronous,
+// same as the hero/signoff), then wrap everything but the accessibility
+// clone in one clip span ourselves.
+const LINE_STAGGER = 750;
+const CHAR_STAGGER = 55;
+
+const taglineCharDelays = new Map();
+const taglineChars = [];
+
+document.querySelectorAll('#tagline-group > p.tagline').forEach((line, lineIndex) => {
+  const chars = splitText(line, { chars: { wrap: false } }).chars;
+
+  const lineMask = document.createElement('span');
+  lineMask.style.overflow = 'clip';
+  lineMask.style.display = 'block';
+  while (line.childNodes.length > 1) {
+    lineMask.appendChild(line.childNodes[1]);
+  }
+  line.appendChild(lineMask);
+
+  chars.forEach((char, charIndex) => {
+    taglineCharDelays.set(char, lineIndex * LINE_STAGGER + charIndex * CHAR_STAGGER);
+    taglineChars.push(char);
+  });
+});
+
+taglineGroup.style.opacity = 1;
+
+animate(taglineChars, {
+  translateY: ['160%', '0%'],
+  opacity: [0, 1],
+  duration: 1100,
+  ease: 'outExpo',
+  delay: (el) => taglineCharDelays.get(el),
+  autoplay: onScroll({
+    target: taglineGroup,
+    enter: 'center -15%',
+    leave: 'center 50%',
+    sync: true,
+  }),
+});
+
+// footer signoff: characters are always visible (no fade/mask), they just glide
+// horizontally into their resting position as you scroll — alternating per line,
+// odd lines slide in from the left, even lines from the right
+const SIGNOFF_LINE_STAGGER = 700;
+const SIGNOFF_CHAR_STAGGER = 40;
+const SIGNOFF_OFFSET = 60;
+
+const signoffLines = document.getElementById('signoff-lines');
+const footerSignoff = document.getElementById('footer-signoff');
+const signoffCharDelays = new Map();
+const signoffCharOffsets = new Map();
+const signoffChars = [];
+
+document.querySelectorAll('#signoff-lines > p.signoff-line').forEach((line, lineIndex) => {
+  const chars = splitText(line, { chars: { wrap: false } }).chars;
+  const fromLeft = lineIndex % 2 === 0;
+
+  chars.forEach((char, charIndex) => {
+    signoffCharDelays.set(
+      char,
+      lineIndex * SIGNOFF_LINE_STAGGER + charIndex * SIGNOFF_CHAR_STAGGER,
+    );
+    signoffCharOffsets.set(char, fromLeft ? -SIGNOFF_OFFSET : SIGNOFF_OFFSET);
+    signoffChars.push(char);
+  });
+});
+
+animate(signoffChars, {
+  translateX: (el) => [signoffCharOffsets.get(el), 0],
+  duration: 1500,
+  ease: 'outExpo',
+  delay: (el) => signoffCharDelays.get(el),
+  autoplay: onScroll({
+    target: footerSignoff,
+    enter: 'center -15%',
+    leave: 'center 50%',
+    sync: true,
+  }),
+});
+
+// work card image carousels: crossfade through every image in a card,
+// however many there are (a pure-CSS animation can only alternate 2 cleanly)
+document.querySelectorAll('.card-carousel').forEach((carousel) => {
+  const imgs = carousel.querySelectorAll('img');
+  if (imgs.length < 2) return;
+
+  let current = 0;
+  let intervalId = null;
+
+  const advance = () => {
+    const next = (current + 1) % imgs.length;
+    imgs[current].style.opacity = 0;
+    imgs[next].style.opacity = 1;
+    current = next;
+  };
+
+  const start = () => {
+    if (intervalId) return;
+    intervalId = setInterval(advance, 4000);
+  };
+
+  const stop = () => {
+    clearInterval(intervalId);
+    intervalId = null;
+  };
+
+  start();
+
+  const media = carousel.closest('.card-media');
+  media.addEventListener('mouseenter', stop);
+  media.addEventListener('mouseleave', start);
+});
+
+//main title shadow effect — skipped on touch/mobile, which get a static
+//text-shadow from CSS instead (see .title in style.css)
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  home.addEventListener('mousemove', (event) => {
+    title.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+
+      //calculates text center
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      //tighten or loosen cursor offset
+      const offsetX = (centerX - event.pageX) / 43000;
+      const offsetY = (centerY - event.pageY) / 100000;
+
+      el.style.textShadow = `
+        ${-offsetX.toFixed(3) * 0.5}em ${-offsetY.toFixed(3) * 0.5}em 0 white,
+        ${offsetX.toFixed(4)}em ${offsetY.toFixed(4)}em 0 rgba(93,93,93, 0.5),
+        ${offsetX.toFixed(4) * 2}em ${offsetY.toFixed(4) * 2}em 0 rgba(93,93,93, 0.4),
+        ${offsetX.toFixed(4) * 3}em ${offsetY.toFixed(4) * 3}em 0 rgba(93,93,93, 0.3),
+        ${offsetX.toFixed(4) * 4}em ${offsetY.toFixed(4) * 4}em 0 rgba(93,93,93, 0.2)
+      `;
+      el.style.webkitTextStroke = `
+          0.1px var(--accent-color)
+        `;
+
+      if (isDarkMode()) {
+        el.style.textShadow = `
+        ${offsetX.toFixed(4) * 0.8}em ${-offsetY.toFixed(4) * 0.8}em 0 rgba(255, 247, 8, 1),
+          ${offsetX.toFixed(4) * 3}em ${offsetY.toFixed(4) * 3}em 0 rgba(255, 25, 60, 0.9),
+          ${-offsetX.toFixed(4) * 3}em ${-offsetY.toFixed(4) * 3}em 0 rgba(30, 225, 255, 0.9)
+        `;
+        el.style.webkitTextStroke = `
+          5px  var(--bg-white-color)
+        `;
+      }
+    });
+  });
+}
 
 // email link
 const user = 'amyruth.rubio';
@@ -112,14 +281,3 @@ const email = user + '@' + domain;
 
 const link = document.getElementById('email-link');
 link.href = 'mailto:' + email;
-
-// safari low-power mode can block video autoplay
-const video = document.querySelector('.bg-video');
-
-document.addEventListener('DOMContentLoaded', () => {
-  // fallback to a static background image when playback fails
-  video.play().catch(() => {
-    video.style.display = 'none';
-    body.style.backgroundImage = `url('/assets/gradient-thumbnail.jpg')`;
-  });
-});

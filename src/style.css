@@ -42,14 +42,88 @@ body {
   background-size: cover;
 }
 
-.bg-video {
+.bg-gradient {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;
   z-index: -10;
   pointer-events: none;
+  overflow: hidden;
+  background-color: #ffebf7;
+}
+
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(170px);
+  will-change: transform;
+}
+
+/* two hues only, kept in their own halves of the screen: both left-side
+   blobs are pink, the right-side blob is blue. Letting a blue blob sit on
+   the pink side (or scaling blobs up to 4x, which made each one big enough
+   to cover the whole viewport) is what was muddying everything into purple
+   — keeping the color zones separated fixes that regardless of how much
+   they move. Each animation now has several irregular keyframe stops
+   instead of one back-and-forth, so the motion doesn't feel like a simple
+   ping-pong. */
+.bg-blob--pink {
+  top: -15%;
+  left: -12%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(255, 162, 205, 1) 0%, rgba(255, 177, 250, 1) 70%);
+  animation: bg-blob-drift-a 7s ease-in-out infinite alternate;
+}
+
+.bg-blob--blue {
+  top: 5%;
+  right: -18%;
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, rgba(175, 240, 255, 1), rgba(169, 254, 255, 1) 70%);
+  animation: bg-blob-drift-b 7s ease-in-out infinite alternate;
+}
+
+@keyframes bg-blob-drift-a {
+  0% {
+    transform: translate(0, 0) scale(2);
+  }
+  28% {
+    transform: translate(95vw, 9vh) scale(1.45);
+  }
+  /* 55% {
+    transform: translate(60vw, 16vh) scale(4.1);
+  } */
+  100% {
+    transform: translate(78vw, -60vh) scale(3.5);
+  }
+}
+
+@keyframes bg-blob-drift-b {
+  0% {
+    transform: translate(0, 0) scale(2);
+  }
+  40% {
+    transform: translate(-94vw, 10vh) scale(2.15);
+  }
+  100% {
+    transform: translate(-78vw, -80vh) scale(3.2);
+  }
+}
+
+.bg-gradient-grain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  pointer-events: none;
+  background-image: url('/assets/grain-noise.jpg');
+  background-size: cover;
+  mix-blend-mode: darken;
+  opacity: 0.8;
 }
 
 /* header */
@@ -153,22 +227,109 @@ nav a {
 
 /* home section */
 
-#title {
+.title {
   color: var(--white-color);
-  font-family: var(--title-font);
+  font-family: var(--h2-font);
   font-weight: 700;
-  -webkit-text-stroke: 2px var(--accent-color);
-  font-size: 3rem;
+  text-align: center;
+  -webkit-text-stroke: 0.1px var(--accent-color);
+  /* fallback/mobile shadow — the mousemove JS effect overrides this inline
+     on pointer-capable devices, but never runs on mobile, so this is what
+     mobile always shows */
+  text-shadow: 2px 1px 0px var(--text-color);
+}
+
+/* mobile: the tagline is hidden entirely (see #tagline-group below) and the
+   hero no longer needs to fill most of the viewport on its own — tablet+
+   restores both back to the original full-height, tagline-included layout */
+#home .container-center {
+  min-height: auto;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+#hero {
+  opacity: 0;
+  min-height: 65vh;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#hero h1 {
+  font-size: clamp(2.1rem, 5vw, 7rem);
+  white-space: nowrap;
+  text-shadow: 2px 1px 0px var(--text-color);
+}
+
+#hero h3 {
+  font-size: clamp(1.8rem, 4vw, 3.7rem);
+  white-space: nowrap;
+  text-shadow: 2px 1px 0px var(--text-color);
+}
+
+#hero h4 {
+  font-size: clamp(1.7rem, 3.5vw, 3rem);
+  white-space: nowrap;
+  text-shadow: 2px 1px 0px var(--text-color);
 }
 
 #home p {
   margin-bottom: 10px;
-  background-color: var(--bg-white-color);
   padding: 1rem;
-  border: 1px solid white;
+  color: var(--white-color);
+  -webkit-text-stroke: 0.1px var(--accent-color);
+  text-shadow: 2px 1px 0px var(--text-color);
+  font-family: var(--h2-font);
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-#home-buttons,
+/* tagline scatter + scroll reveal */
+
+#tagline-group {
+  display: none;
+  opacity: 0;
+  margin-top: 20vh;
+  margin-bottom: 25vh;
+  position: relative;
+  height: 42rem;
+}
+
+.tagline:nth-of-type(1) {
+  position: absolute;
+  top: 0;
+  left: 5%;
+}
+
+.tagline:nth-of-type(2) {
+  position: absolute;
+  top: 10rem;
+  left: 20%;
+}
+
+.tagline:nth-of-type(3) {
+  position: absolute;
+  top: 20rem;
+  left: 12%;
+}
+
+.tagline:nth-of-type(4) {
+  position: absolute;
+  top: 30rem;
+  left: 25%;
+}
+
+/* the line-level clip mask (2nd direct child span, right after splitText's
+   hidden accessibility clone) is sized to the text's layout metrics, but
+   Shrikhand's italic-leaning strokes/descenders visually overshoot that box
+   — pad it out so the ink never touches the clip edge */
+.tagline > span:nth-child(2) {
+  padding-right: 0.3em;
+  padding-bottom: 0.3em;
+}
+
 .card-links,
 #find-me-info ul {
   display: flex;
@@ -176,7 +337,6 @@ nav a {
   gap: 1rem;
 }
 
-#home-buttons li,
 .card-links li,
 #contact button {
   padding: 0;
@@ -191,8 +351,16 @@ nav a {
   transition: all 0.5s ease;
 }
 
-#home-buttons li::before,
+.card-links li {
+  border-radius: 50%;
+}
+
+.card-links {
+  gap: 0.4rem;
+}
+
 .card-links li::before,
+#find-me-info li::before,
 #contact button::before {
   overflow: hidden;
   content: '';
@@ -205,31 +373,46 @@ nav a {
   transform: rotate(35deg);
   transition: all 0.5s ease;
   width: 50px;
+  z-index: -2;
 }
 
-#home-buttons li:hover::before,
 .card-links li:hover::before,
+#find-me-info li:hover::before,
 #contact button:hover::before {
   left: 120%;
 }
 
-#home-buttons li:hover,
-.card-links li:hover {
-  scale: 1.2;
-  border: 1px solid var(--text-color);
+.card-links li:hover,
+#find-me-info li:hover {
+  scale: 1.05;
 }
 
-#home-buttons li:active,
-.card-links li:active {
-  scale: 1.1;
+.card-links li:active,
+#find-me-info li:active {
+  scale: 1.02;
 }
 
-#home-buttons a,
+.card-links li {
+  flex: initial;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background-color: transparent;
+}
+
 .card-links a {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding: 0;
+}
+
+.card-links img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
 }
 
 /* h2 */
@@ -241,6 +424,9 @@ h2 {
   font-family: var(--h2-font);
   font-size: 1.5rem;
   font-weight: 700;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
 /* safari support */
@@ -261,10 +447,63 @@ h2 {
 }
 
 #about-content-container,
-#contact-content-container {
+#contact-content-container,
+#contact-columns {
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
+}
+
+#footer-signoff {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  min-height: 26rem;
+}
+
+/* positioned the same way as the tagline scatter (#tagline-group) — each
+   line is placed by hand via its own nth-child(N) rule below, so edit the
+   top/left values there directly to move a line around */
+#signoff-lines {
+  position: relative;
+  height: 15rem;
+}
+
+.signoff-line {
+  font-family: var(--text-font);
+  font-size: 1.6rem;
+  color: var(--text-color);
+}
+
+.signoff-line:nth-child(1) {
+  position: absolute;
+  top: 0;
+  left: 20%;
+}
+
+.signoff-line:nth-child(2) {
+  position: absolute;
+  top: 3rem;
+  left: 30%;
+}
+
+.signoff-line:nth-child(3) {
+  position: absolute;
+  top: 6rem;
+  left: 25%;
+}
+
+.signoff-line:nth-child(4) {
+  position: absolute;
+  top: 9rem;
+  left: 15%;
+}
+
+.signoff-line:nth-child(5) {
+  position: absolute;
+  top: 12rem;
+  left: 25%;
 }
 
 #about-content-container {
@@ -291,53 +530,130 @@ h2 {
 /* wavy clip-path */
 
 #about::before {
-  clip-path: polygon(
-    /* top wave */ 0% 3%,
-    20% 4%,
-    45% 5%,
-    75% 3%,
-    100% 1%,
-
-    /* right side */ 100% 100%,
-
-    /* bottom wave */ 60% 99%,
-    30% 98%,
-    15% 99%,
-    0% 99%
-  );
+  animation: wavy-clip-path 3.5s steps(1) infinite;
 }
 
 #contact::before {
-  clip-path: polygon(
-    /* top wave */ 0% 3%,
-    20% 4%,
-    45% 5%,
-    75% 3%,
-    100% 1%,
+  animation: wavy-clip-path-contact 3.5s steps(1) infinite;
+}
 
-    /* right side */ 100% 100%,
+@keyframes wavy-clip-path {
+  0%,
+  20% {
+    clip-path: polygon(
+      /* top wave */ 0% 3%,
+      20% 4%,
+      45% 5%,
+      75% 4%,
+      100% 1%,
 
-    /* end clip-path */ 0% 100%
-  );
+      /* right side */ 100% 100%,
+
+      /* bottom wave */ 60% 98%,
+      30% 98%,
+      15% 99%,
+      0% 99%
+    );
+  }
+  40%,
+  60% {
+    clip-path: polygon(
+      /* top wave */ 0% 3%,
+      15% 3.5%,
+      40% 4.5%,
+      80% 3.5%,
+      100% 1%,
+
+      /* right side */ 100% 100%,
+
+      /* bottom wave */ 65% 97%,
+      27% 99%,
+      11% 98%,
+      0% 99%
+    );
+  }
+  40%,
+  80% {
+    clip-path: polygon(
+      /* top wave */ 0% 3%,
+      18% 4.5%,
+      43% 3.5%,
+      78% 4.5%,
+      100% 1%,
+
+      /* right side */ 100% 100%,
+
+      /* bottom wave */ 70% 99%,
+      24% 97%,
+      13% 98%,
+      0% 99%
+    );
+  }
+}
+
+@keyframes wavy-clip-path-contact {
+  0%,
+  20% {
+    clip-path: polygon(
+      /* top wave */ 0% 3%,
+      20% 4%,
+      45% 5%,
+      75% 3%,
+      100% 1%,
+
+      /* right side */ 100% 100%,
+
+      /* end clip-path */ 0% 100%
+    );
+  }
+  40%,
+  60% {
+    clip-path: polygon(
+      /* top wave */ 0% 3%,
+      15% 3.5%,
+      40% 4.5%,
+      80% 3.5%,
+      100% 1%,
+
+      /* right side */ 100% 100%,
+
+      /* end clip-path */ 0% 100%
+    );
+  }
+  40%,
+  80% {
+    clip-path: polygon(
+      /* top wave */ 0% 3%,
+      18% 4.5%,
+      43% 3.5%,
+      78% 4.5%,
+      100% 1%,
+
+      /* right side */ 100% 100%,
+
+      /* end clip-path */ 0% 100%
+    );
+  }
 }
 
 /* tech stack in about section */
 
 #tech-stack {
   position: relative;
+  width: 13rem;
+  height: 16rem;
+  margin-inline: auto;
   rotate: -1.5deg;
   transition: all 0.5s ease;
   border: 8px solid var(--text-color);
   padding: 20px;
   background: url('/assets/tech-stack-bg.png');
   background-size: cover;
-  background-color: var(--white-color);
+  background-color: var(--bg-white-color);
   background-blend-mode: darken;
-}
-
-#tech-stack:hover {
-  rotate: 1deg;
-  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 #tech-stack::before {
@@ -351,25 +667,115 @@ h2 {
   border: 2px solid var(--white-color);
 }
 
-#tech-stack h3 {
-  margin-bottom: 1rem;
+#tech-stack-wrapper h3 {
+  margin-bottom: 2.5rem;
   text-align: left;
 }
 
-#tech-stack ul {
+.tech-category {
+  flex: 1;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--accent-color);
+  transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.tech-category:last-child {
+  border-bottom: none;
+}
+
+.tech-category h4 {
+  font-family: var(--h2-font);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 1.3em;
+}
+
+.label-track {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: label-slide-up 5s ease-out 10s infinite;
+}
+
+.label-track span {
+  display: block;
+  flex: 0 0 1.3em;
+  height: 1.3em;
+  line-height: 1.3em;
+}
+
+@keyframes label-slide-up {
+  0%,
+  30% {
+    transform: translateY(0);
+  }
+  50%,
+  80% {
+    transform: translateY(-1.3em);
+  }
+  100% {
+    transform: translateY(-2.6em);
+  }
+}
+
+#tech-stack:has(.tech-category:hover) .label-track {
+  animation-play-state: paused;
+}
+
+.tech-category:hover {
+  flex: 0 0 10rem;
+}
+
+.tech-category:hover .label-track {
+  transform: translateY(0) !important;
+}
+
+#tech-stack:has(.tech-category:hover) .tech-category:not(:hover) {
+  flex: 0 0 1.2rem;
+}
+
+#tech-stack:has(.tech-category:hover) .tech-category:not(:hover) h4 {
+  opacity: 0;
+}
+
+/* mobile: list items are always the same color as the category label (no
+   separate dim/bright hover state) and a bit bigger once expanded — tablet+
+   restores the original dim-until-hovered look, see media query below */
 #tech-stack li {
-  color: var(--accent-color);
+  color: var(--text-color);
   transition: all 0.3s ease-in-out;
 }
 
+.tech-category ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-size: 0.85rem;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    max-height 0.5s ease;
+}
+
+.tech-category:hover ul {
+  max-height: 10rem;
+  opacity: 1;
+  pointer-events: auto;
+}
+
 #tech-stack li:hover {
-  color: var(--text-color);
   scale: 1.1;
   translate: 0 -10%;
 }
@@ -397,7 +803,7 @@ h2 {
 .card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   border: 1px solid var(--white-color);
   border-radius: 10px;
   background-color: var(--bg-white-color);
@@ -407,8 +813,72 @@ h2 {
   transition: all 0.5s ease-out;
 }
 
-.card:hover {
-  padding: 50px 25px;
+.card-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.card-media {
+  order: -1;
+  width: 100%;
+  position: relative;
+  aspect-ratio: 1.5;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.card-content {
+  order: 2;
+}
+
+.card--reverse .card-media {
+  order: -1;
+}
+
+.card--reverse .card-content {
+  order: 2;
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.card-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+.card-media:hover .card-carousel {
+  transform: scale(1.1);
+}
+
+.card-carousel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.card-carousel img:first-child {
+  opacity: 1;
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
 }
 
 /* tech stack in work section marquee */
@@ -418,6 +888,9 @@ h2 {
   background-color: var(--bg-white-color);
   width: 100%;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .marquee-container li {
@@ -444,54 +917,17 @@ h2 {
   }
 }
 
-/* card images */
-
-.card-img-container {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  width: 100%;
-  height: 10%;
-}
-
-.card-img-container img {
-  width: 100%;
-  object-fit: cover;
-  border: 1px solid var(--white-color);
-  transition: all 0.2s ease-out;
-}
-
-.card-img-container img:hover {
-  scale: 1.1;
-  z-index: 1;
-}
-
 /* card links */
-
-.card-links li,
-#contact button {
-  background-color: transparent;
-  border-color: 1px solid var(--text-color);
-  border-radius: 5px;
-}
-
-.card-links a,
-#contact button {
-  padding: 0.5rem 2rem;
-}
 
 /* contact section */
 
 #contact .container-center {
   min-height: 110vh;
+  margin-top: 6rem;
 }
 
 #contact a {
   transition: all 0.5s ease;
-}
-
-#contact a:hover {
-  letter-spacing: 1px;
 }
 
 #contact-content-container {
@@ -510,7 +946,8 @@ textarea {
   padding: 0.8rem;
   outline: none;
   background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid var(--text-color);
+  border: 1px solid var(--white-color);
+  box-shadow: 1px 1px 2px var(--accent-color);
   font-family: var(--text-font);
   font-size: 1rem;
   color: var(--text-color);
@@ -520,7 +957,11 @@ textarea {
 }
 
 #contact button {
+  padding: 0.5rem 2rem;
   font-size: 0.9rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--white-color);
+  box-shadow: 1px 1px 2px var(--accent-color);
   border-radius: 2px !important;
 }
 
@@ -529,18 +970,43 @@ textarea {
 }
 
 #find-me-info ul {
-  padding-inline: 0.5rem;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 #find-me-info li {
+  position: relative;
+  flex: initial;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+  border-radius: 20%;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+#find-me-info li:hover {
+  scale: 1.05;
+}
+
+#find-me-info li:active {
+  scale: 1.02;
+}
+
+#find-me-info li a {
   display: flex;
-  gap: 0.5rem;
-  align-items: baseline;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
 }
 
 #find-me-info img {
-  height: 1rem;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* dark-mode */
@@ -563,11 +1029,12 @@ body.dark-mode {
   --accent-color: #333333;
 }
 
-body.dark-mode #title {
+body.dark-mode .title {
   -webkit-text-stroke: 1px var(--light-color);
 }
 
-body.dark-mode h2 {
+body.dark-mode h2,
+body.dark-mode #home p {
   text-shadow: 2px 1px 0px var(--accent-color);
 }
 
@@ -594,7 +1061,8 @@ body.dark-mode .nav-bg {
 }
 
 body.dark-mode #find-me-info img,
-body.dark-mode #dark-mode img {
+body.dark-mode #dark-mode img,
+body.dark-mode .card-links img {
   filter: brightness(3);
 }
 
@@ -628,21 +1096,50 @@ body.dark-mode textarea {
     font-size: 1rem;
   }
 
-  #title {
-    font-size: 5rem;
+  #home .container-center {
+    min-height: 90vh;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  #hero {
+    min-height: 70vh;
+    margin-bottom: 0;
+  }
+
+  #tagline-group {
+    display: block;
+  }
+
+  /* the desktop-tuned scatter positions — mobile uses smaller, more
+     centered left offsets defined in the base rules above */
+  .tagline:nth-of-type(1) {
+    left: 25%;
+  }
+
+  .tagline:nth-of-type(2) {
+    left: 45%;
+  }
+
+  .tagline:nth-of-type(3) {
+    left: 35%;
+  }
+
+  .tagline:nth-of-type(4) {
+    left: 52%;
   }
 
   #about-content-container {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  #contact-columns {
     grid-template-columns: 1fr 1fr;
+    align-items: stretch;
   }
 
-  #contact-content-container {
-    grid-template-columns: 2fr 1fr;
-    gap: 4rem;
-  }
-
-  #find-me-info ul {
-    flex-direction: column;
+  .signoff-line {
+    text-align: center;
   }
 
   form {
@@ -654,13 +1151,52 @@ body.dark-mode textarea {
     padding: 1rem;
     font-size: 1.15rem;
   }
+
+  .card-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card-media {
+    width: 100%;
+    margin: 0;
+    order: 1;
+  }
+
+  .card--reverse .card-media {
+    order: 2;
+  }
+
+  .card--reverse .card-content {
+    order: 1;
+  }
+
+  .card:hover {
+    padding: 50px 25px;
+  }
+
+  #tech-stack:hover {
+    rotate: 1deg;
+    cursor: default;
+  }
+
+  #tech-stack li {
+    color: var(--accent-color);
+  }
+
+  #tech-stack li:hover {
+    color: var(--text-color);
+  }
+
+  .tech-category ul {
+    font-size: 0.65rem;
+  }
 }
 
 /* desktop */
 
 @media (min-width: 1024px) {
   .container-center {
-    max-width: 55vw;
+    max-width: 65vw;
   }
 
   #about-content-container {
@@ -668,14 +1204,184 @@ body.dark-mode textarea {
   }
 
   .card {
-    max-width: 55vw;
+    max-width: 65vw;
   }
 
   #tech-stack {
     scale: 1.2;
   }
 
-  #tech-stack ul {
+  .tech-category ul {
     font-size: 1.2rem;
+  }
+}
+
+/* ==========================================================================
+   micro-motion system: scroll/load reveal + custom cursor
+   ========================================================================== */
+
+/* elements without a pre-existing transition get one here; elements that
+   already transition (.card, #contact button, etc.) reuse their own —
+   [data-reveal] below only ever sets the opacity/transform values */
+header h1,
+nav,
+#dark-mode,
+#about-text p,
+#tech-stack-wrapper,
+#contact-content-container form,
+#find-me-info {
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* custom cursor: small glowing light that morphs into a contextual CTA
+   pill when hovering an interactive element */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
+#cursor-light {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* the plain idle glow — a separate element so its per-frame velocity-driven
+   rotate/scale (set directly via inline style in cursor.js) never collides
+   with .cursor-core's own CSS-driven transforms below */
+.cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow:
+    0 0 20px 2px rgba(255, 255, 255, 0.35),
+    0 0 50px 3px rgba(255, 255, 255, 0.25),
+    0 0 30px 8px rgba(255, 255, 255, 0.15);
+  transform: translate(-50%, -50%);
+}
+
+#cursor-light.is-cta .cursor-dot {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.cursor-core {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  max-width: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-radius: 999px;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.22s ease,
+    height 0.22s ease,
+    max-width 0.22s ease,
+    padding 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color 0.22s ease;
+}
+
+#cursor-light.is-cta .cursor-core {
+  width: auto;
+  height: 30px;
+  max-width: 200px;
+  padding: 0 0.9rem;
+  background: rgba(255, 254, 251, 0.96);
+  /* how far right/down the pill's center sits from the actual cursor point
+     — tune these two values to nudge its position */
+  transform: translate(calc(-50% + 28px), calc(-50% + 10px));
+  box-shadow:
+    0 0 20px 2px rgba(255, 255, 255, 0.35),
+    0 0 50px 3px rgba(255, 255, 255, 0.25),
+    0 0 30px 8px rgba(255, 255, 255, 0.15);
+}
+
+/* near the right edge of the screen (e.g. the dark-mode toggle), cursor.js
+   adds this class so the pill grows to the left instead of clipping off
+   the edge of the viewport — same idea, just the X offset flipped negative */
+#cursor-light.is-cta.is-cta-flip .cursor-core {
+  transform: translate(calc(-50% - 28px), calc(-50% + 10px));
+}
+
+#cursor-light.is-pressed .cursor-core {
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+.cursor-label {
+  opacity: 0;
+  transform: translateY(2px);
+  font-family: var(--text-font);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #3a3a3a;
+  transition:
+    opacity 0.18s ease 0.05s,
+    transform 0.18s ease 0.05s;
+}
+
+#cursor-light.is-cta .cursor-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* only show the custom cursor where a real mouse is available */
+@media (hover: none), (pointer: coarse) {
+  #cursor-light {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cursor-light {
+    display: none !important;
+  }
+}
+
+/* accessibility kill-switch: neutralize motion site-wide for users who've
+   asked the OS for reduced motion. only engages when that setting is on —
+   no effect on default behavior. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

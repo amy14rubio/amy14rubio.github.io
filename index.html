@@ -11,12 +11,14 @@
     />
   </head>
   <body>
-    <video class="bg-video" preload="auto" autoplay muted loop playsinline webkit-playsinline>
-      <source src="/assets/gradient.mp4" type="video/mp4" />
-    </video>
+    <div class="bg-gradient" aria-hidden="true">
+      <div class="bg-blob bg-blob--pink"></div>
+      <div class="bg-blob bg-blob--blue"></div>
+    </div>
+    <div class="bg-gradient-grain" aria-hidden="true"></div>
     <header>
-      <h1><a href="#">Amyruth</a></h1>
-      <nav class="nav">
+      <h1 data-reveal="load"><a href="#">Amyruth</a></h1>
+      <nav class="nav" data-reveal="load" style="transition-delay: 80ms">
         <span class="nav-bg"></span>
         <ul>
           <li>
@@ -33,64 +35,187 @@
           </li>
         </ul>
       </nav>
-      <button id="dark-mode">
+      <button id="dark-mode" data-reveal="load" style="transition-delay: 160ms">
         <img src="/assets/dark-mode.svg" alt="dark mode icon" />
       </button>
     </header>
     <main>
       <section id="home">
         <div class="container-center">
-          <h1 id="title">Hello there! I'm Amyruth Rubio</h1>
-          <h2>Software Engineer</h2>
-          <p>
-            I'm a student at Marcy Lab School learning to create beautiful, accessible websites.
-          </p>
-          <ul id="home-buttons">
-            <li>
-              <a href="#work">Explore Work</a>
-            </li>
-            <li>
-              <a href="#contact">Connect</a>
-            </li>
-          </ul>
+          <div id="hero">
+            <h4 class="title">Hello there!</h4>
+            <h1 class="title">I'm Amyruth Rubio</h1>
+            <h3 class="title">Software Engineer</h3>
+          </div>
+
+          <div id="tagline-group">
+            <p class="tagline">I like making</p>
+            <p class="tagline">things</p>
+            <p class="tagline">that make</p>
+            <p class="tagline">people smile</p>
+          </div>
         </div>
       </section>
       <section id="about">
         <div class="container-center">
           <div id="about-content-container">
             <div id="about-text">
-              <h2>About</h2>
-              <p>I'm a software engineering fellow at The Marcy Lab School in Brooklyn, NY.</p>
-              <p>
+              <h2 data-reveal>About</h2>
+              <p data-reveal style="transition-delay: 90ms">
+                I'm a software engineering fellow at The Marcy Lab School in Brooklyn, NY.
+              </p>
+              <p data-reveal style="transition-delay: 180ms">
                 When I’m not coding, you’ll find me listening to podcasts, making music, spending
                 time with my family and church community, or recharging with something creative.
               </p>
             </div>
-            <div id="tech-stack">
-              <h3>Tech Stack</h3>
-              <ul>
-                <li>JavaScript</li>
-                <li>Python</li>
-                <li>HTML/CSS</li>
-                <li>React</li>
-                <li>Node.js</li>
-                <li>Express.js</li>
-                <li>PostgreSQL</li>
-                <li>Supabase</li>
-                <li>Firebase</li>
-                <li>Electron</li>
-                <li>Tailwind CSS</li>
-                <li>Bootstrap</li>
-              </ul>
+            <div id="tech-stack-wrapper" data-reveal style="transition-delay: 240ms">
+              <div id="tech-stack">
+                <div class="tech-category">
+                  <h4 aria-label="Languages">
+                    <span class="label-track" aria-hidden="true">
+                      <span>Languages</span>
+                      <span>Tech Stack</span>
+                      <span>Languages</span>
+                    </span>
+                  </h4>
+                  <ul>
+                    <li>JavaScript</li>
+                    <li>HTML/CSS</li>
+                    <li>Python</li>
+                  </ul>
+                </div>
+                <div class="tech-category">
+                  <h4 aria-label="Frontend">
+                    <span class="label-track" aria-hidden="true">
+                      <span>Frontend</span>
+                      <span>Tech Stack</span>
+                      <span>Frontend</span>
+                    </span>
+                  </h4>
+                  <ul>
+                    <li>React</li>
+                    <li>Tailwind</li>
+                    <li>Bootstrap</li>
+                    <li>Vite</li>
+                  </ul>
+                </div>
+                <div class="tech-category">
+                  <h4 aria-label="Backend">
+                    <span class="label-track" aria-hidden="true">
+                      <span>Backend</span>
+                      <span>Tech Stack</span>
+                      <span>Backend</span>
+                    </span>
+                  </h4>
+                  <ul>
+                    <li>Node.js</li>
+                    <li>Express.js</li>
+                    <li>Electron</li>
+                  </ul>
+                </div>
+                <div class="tech-category">
+                  <h4 aria-label="Databases">
+                    <span class="label-track" aria-hidden="true">
+                      <span>Databases</span>
+                      <span>Tech Stack</span>
+                      <span>Databases</span>
+                    </span>
+                  </h4>
+                  <ul>
+                    <li>PostgreSQL</li>
+                    <li>Supabase</li>
+                    <li>Firebase</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
       <section id="work">
         <div class="container-center">
-          <h2>Work</h2>
+          <h2 data-reveal>Work</h2>
           <div id="card-container">
-            <div class="card">
+            <div class="card card--reverse" data-reveal>
+              <div class="marquee-container">
+                <ul class="marquee" style="--i: 2">
+                  <li>𐙚 ‧₊˚ ⋅</li>
+                  <li>STATUS:</li>
+                  <li>Complete</li>
+                  <li>‧₊˚ ⋅</li>
+                  <li>TECH STACK:</li>
+                  <li>React</li>
+                  <li>Python</li>
+                  <li>Firebase</li>
+                  <li>Gemini AI</li>
+                  <li>Capacitor</li>
+                  <li>MapLibre</li>
+                  <li>Vite</li>
+                  <li>‧₊˚ ⋅ 𐙚</li>
+                </ul>
+                <ul class="marquee" aria-hidden="true" style="--i: 2">
+                  <li>𐙚 ‧₊˚ ⋅</li>
+                  <li>STATUS:</li>
+                  <li>Complete</li>
+                  <li>‧₊˚ ⋅</li>
+                  <li>TECH STACK:</li>
+                  <li>React</li>
+                  <li>Python</li>
+                  <li>Firebase</li>
+                  <li>Gemini AI</li>
+                  <li>Capacitor</li>
+                  <li>MapLibre</li>
+                  <li>Vite</li>
+                  <li>‧₊˚ ⋅ 𐙚</li>
+                </ul>
+              </div>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/lead-dux1.png" alt="lead-dux app" />
+                    <img src="/assets/lead-dux2.png" alt="lead-dux app" />
+                    <img src="/assets/lead-dux3.png" alt="lead-dux app" />
+
+                    <img src="/assets/lead-dux4.png" alt="lead-dux app" />
+
+                    <img src="/assets/lead-dux5.png" alt="lead-dux app" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Lead-Dux</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://lead-dux.web.app" target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/team1-unity/lead-dux" target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                      <li>
+                        <!-- placeholder: swap href once the demo user account link is ready -->
+                        <a href="#"><img src="/assets/demo.svg" alt="demo user" /></a>
+                      </li>
+                      <li>
+                        <!-- placeholder: swap href once the demo organization link is ready -->
+                        <a href="#"><img src="/assets/demo.svg" alt="demo organization" /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    What if technology could encourage people to get involved in their local
+                    communities? Introducing Lead-Dux! Lead-Dux turns real volunteer opportunities
+                    into quests, giving people a gamified way to take that first step towards
+                    leadership.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 2">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -119,37 +244,42 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/music-journal-app1.png" alt="music journal app" />
-                </li>
-                <li>
-                  <img src="/assets/music-journal-app2.png" alt="music journal app" />
-                </li>
-              </ul>
-              <h3>Music Journal App</h3>
-              <p>
-                Track practice sessions, celebrate milestones, organize music resources, and capture
-                inspiration throughout your musical journey
-              </p>
-              <ul class="card-links">
-                <li>
-                  <a
-                    href="https://full-stack-project-remix-amy14rubio-1.onrender.com"
-                    target="_blank"
-                    >Live</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/The-Marcy-Lab-School-Assignments/full-stack-project-remix-amy14rubio-1"
-                    target="_blank"
-                    >Code</a
-                  >
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/music-journal-app1.png" alt="music journal app" />
+                    <img src="/assets/music-journal-app2.png" alt="music journal app" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Music Journal App</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a
+                          href="https://full-stack-project-remix-amy14rubio-1.onrender.com"
+                          target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://github.com/The-Marcy-Lab-School-Assignments/full-stack-project-remix-amy14rubio-1"
+                          target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    Practice notes on my phone. Ideas on random pieces of paper. Sheet music in
+                    different folders. Learning multiple instruments meant everything was
+                    everywhere, so I built one space for it all.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card">
+            <div class="card card--reverse" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 2">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -176,29 +306,38 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/readme-maybe1.png" alt="read me maybe app" />
-                </li>
-                <li>
-                  <img src="/assets/readme-maybe2.png" alt="read me maybe app" />
-                </li>
-              </ul>
-              <h3>ReadMe Maybe?</h3>
-              <p>
-                Explore and save books through a custom interface with search, genre browsing,
-                random discovery, and music that sets the mood for reading
-              </p>
-              <ul class="card-links">
-                <li>
-                  <a href="https://amy-abel-mls.github.io/mod-4-project" target="_blank">Live</a>
-                </li>
-                <li>
-                  <a href="https://github.com/amy-abel-mls/mod-4-project" target="_blank">Code</a>
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/readme-maybe1.png" alt="read me maybe app" />
+                    <img src="/assets/readme-maybe2.png" alt="read me maybe app" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>ReadMe Maybe?</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://amy-abel-mls.github.io/mod-4-project" target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/amy-abel-mls/mod-4-project" target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    Sometimes you don't know what you want to read until you stumble across it. I
+                    wanted discovering books to feel less like searching a database and more like
+                    flipping through an old digital bookshelf.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card">
+            <div class="card" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 1">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -231,31 +370,40 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/valentines-app1.png" alt="valentine's app" />
-                </li>
-                <li>
-                  <img src="/assets/valentines-app2.png" alt="valentine's app" />
-                </li>
-              </ul>
-              <h3>Valentine's Day Letter App</h3>
-              <p>
-                Access personalized Valentine’s letters through a custom designed interface using
-                private, name based lookup
-              </p>
-              <ul class="card-links">
-                <li>
-                  <a href="https://valentines-day-letter-app.web.app/" target="_blank">Live</a>
-                </li>
-                <li>
-                  <a href="https://github.com/amy14rubio/valentines-day-letter-app" target="_blank"
-                    >Code</a
-                  >
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/valentines-app1.png" alt="valentine's app" />
+                    <img src="/assets/valentines-app2.png" alt="valentine's app" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Valentine's Day Letter App</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://valentines-day-letter-app.web.app/" target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://github.com/amy14rubio/valentines-day-letter-app"
+                          target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    There are things we want to say to the people we care about, but never quite
+                    find the right moment to say them. Enter your name to reveal a letter written
+                    just for you (if you're on my friend's list!).
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card">
+            <div class="card card--reverse" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 2">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -280,28 +428,39 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/birthday-game1.png" alt="birthday game" />
-                </li>
-                <li>
-                  <img src="/assets/birthday-game2.png" alt="birthday game" />
-                </li>
-              </ul>
-              <h3>Birthday Arcade Game</h3>
-              <p>A time-based arcade game where you score points collecting gifts</p>
-              <ul class="card-links">
-                <li>
-                  <a href="https://happy-birthday-arcade-game.web.app/" target="_blank">Live</a>
-                </li>
-                <li>
-                  <a href="https://github.com/amy14rubio/happy-birthday-arcade-game" target="_blank"
-                    >Code</a
-                  >
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/birthday-game1.png" alt="birthday game" />
+                    <img src="/assets/birthday-game2.png" alt="birthday game" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Birthday Arcade Game</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://happy-birthday-arcade-game.web.app/" target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://github.com/amy14rubio/happy-birthday-arcade-game"
+                          target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    A birthday should always have a little extra fun. This small arcade game was
+                    made to celebrate someone's special day.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card">
+            <div class="card" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 0">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -334,31 +493,39 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/quiz-app1.png" alt="quiz app game" />
-                </li>
-                <li>
-                  <img src="/assets/quiz-app2.png" alt="quiz app game" />
-                </li>
-              </ul>
-              <h3>Quiz App</h3>
-              <p>
-                A quiz game with CLI, React, and web versions where users can create quizzes and
-                share them with friends
-              </p>
-              <ul class="card-links">
-                <li>
-                  <a href="https://amys-quiz-app.web.app/" target="_blank">Live</a>
-                </li>
-                <li>
-                  <a href="https://github.com/amy14rubio/swe-project-1-cli-app" target="_blank"
-                    >Code</a
-                  >
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/quiz-app1.png" alt="quiz app game" />
+                    <img src="/assets/quiz-app2.png" alt="quiz app game" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Quiz App</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://amys-quiz-app.web.app/" target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://github.com/amy14rubio/swe-project-1-cli-app"
+                          target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    After creating a quiz in the command line, I challenged myself to bring it to
+                    the web with React, my first time using the framework.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card">
+            <div class="card card--reverse" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 1">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -383,28 +550,37 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/rock-paper-scissors1.png" alt="rock paper scissors game" />
-                </li>
-                <li>
-                  <img src="/assets/rock-paper-scissors2.png" alt="rock paper scissors game" />
-                </li>
-              </ul>
-              <h3>Rock Paper Scissors Game</h3>
-              <p>Play the classic player-vs-computer game with fun ASCII art animations</p>
-              <ul class="card-links">
-                <li>
-                  <a href="https://youtu.be/d-ucRcTgeYE" target="_blank">Demo</a>
-                </li>
-                <li>
-                  <a href="https://github.com/amy14rubio/rock-paper-scissors" target="_blank"
-                    >Code</a
-                  >
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/rock-paper-scissors1.png" alt="rock paper scissors game" />
+                    <img src="/assets/rock-paper-scissors2.png" alt="rock paper scissors game" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Rock Paper Scissors Game</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://youtu.be/d-ucRcTgeYE" target="_blank"
+                          ><img src="/assets/demo.svg" alt="demo video"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/amy14rubio/rock-paper-scissors" target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    Rock Paper Scissors is a pretty simple game, but I wanted to see how much
+                    personality I could give it.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card">
+            <div class="card" data-reveal>
               <div class="marquee-container">
                 <ul class="marquee" style="--i: 1">
                   <li>𐙚 ‧₊˚ ⋅</li>
@@ -419,26 +595,41 @@
                   <li>‧₊˚ ⋅ 𐙚</li>
                 </ul>
               </div>
-              <ul class="card-img-container">
-                <li>
-                  <img src="/assets/james-quest1.png" alt="James' quest" />
-                </li>
-                <li>
-                  <img src="/assets/james-quest2.png" alt="James' quest" />
-                </li>
-              </ul>
-              <h3>Disrupt Aging - James' Quest</h3>
-              <p>One of the first games I built in middle school that got me into coding!</p>
-              <ul class="card-links">
-                <li>
-                  <a href="https://scratch.mit.edu/projects/272651059" target="_blank">Live</a>
-                </li>
-                <li>
-                  <a href="https://scratch.mit.edu/projects/272651059/editor/" target="_blank"
-                    >Code</a
-                  >
-                </li>
-              </ul>
+              <div class="card-columns">
+                <div class="card-media">
+                  <div class="card-carousel">
+                    <img src="/assets/james-quest1.png" alt="James' quest" />
+                    <img src="/assets/james-quest2.png" alt="James' quest" />
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="card-heading">
+                    <h3>Disrupt Aging - James' Quest</h3>
+                    <ul class="card-links">
+                      <li>
+                        <a href="https://scratch.mit.edu/projects/272651059" target="_blank"
+                          ><img src="/assets/web.svg" alt="live site"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="https://scratch.mit.edu/projects/272651059/editor/" target="_blank"
+                          ><img src="/assets/github.svg" alt="github repository"
+                        /></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    One of the first games I built in middle school, and one of the projects that
+                    got me into coding! It went on to become a finalist in the
+                    <a
+                      href="https://mouse.org/news/congratulations-to-games-for-change-2019-winners"
+                      style="text-decoration: underline"
+                      target="_blank"
+                      >2019 Games for Change Student Challenge.</a
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -447,39 +638,56 @@
 
     <footer id="contact">
       <div class="container-center">
-        <h2>Contact</h2>
-        <div id="contact-content-container">
-          <form action="https://formspree.io/f/mreqvagw" method="POST">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required />
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required />
-            <label for="message">Message</label>
-            <textarea name="message" id="message" rows="5"></textarea>
-            <button type="submit">Send</button>
-          </form>
-          <div id="find-me-info">
-            <h3>Find Me</h3>
-            <ul>
-              <li>
-                <img src="/assets/email.svg" alt="email icon" />
-                <a id="email-link" target="_blank">Email</a>
-              </li>
-              <li>
-                <img src="/assets/github.svg" alt="github icon" />
-                <a href="https://github.com/amy14rubio" target="_blank">GitHub</a>
-              </li>
-              <li>
-                <img src="/assets/linkedin.svg" alt="linkedin icon" />
-                <a href="https://www.linkedin.com/in/amyruth-rubio/" target="_blank">LinkedIn</a>
-              </li>
-            </ul>
+        <h2 data-reveal>Contact</h2>
+        <div id="contact-columns">
+          <div id="contact-content-container">
+            <form
+              data-reveal
+              style="transition-delay: 90ms"
+              action="https://formspree.io/f/mreqvagw"
+              method="POST"
+            >
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required />
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required />
+              <label for="message">Message</label>
+              <textarea name="message" id="message" rows="5"></textarea>
+              <button type="submit">Send</button>
+            </form>
+          </div>
+          <div id="footer-signoff">
+            <div id="signoff-lines">
+              <p class="signoff-line">thanks</p>
+              <p class="signoff-line">for</p>
+              <p class="signoff-line">stopping by!</p>
+              <p class="signoff-line">let's keep</p>
+              <p class="signoff-line">in touch:</p>
+            </div>
+            <div id="find-me-info" data-reveal style="transition-delay: 180ms">
+              <ul>
+                <li>
+                  <a id="email-link" target="_blank">
+                    <img src="/assets/email.svg" alt="Email" />
+                  </a>
+                </li>
+                <li style="border-radius: 50%">
+                  <a href="https://github.com/amy14rubio" target="_blank">
+                    <img src="/assets/github.svg" alt="GitHub" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.linkedin.com/in/amyruth-rubio/" target="_blank">
+                    <img src="/assets/linkedin.svg" alt="LinkedIn" />
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </footer>
 
     <script type="module" src="/src/script.js"></script>
-
   </body>
 </html>
