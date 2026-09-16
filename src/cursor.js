@@ -1,8 +1,12 @@
+import { animate } from 'animejs';
+
 // custom cursor: a small glowing "light source" that follows the mouse with
 // a bit of organic lag, and morphs into a contextual CTA pill when hovering
 // a genuinely interactive element (links/buttons only — never decorative or
-// static content). Disabled entirely on touch devices and for users who've
-// asked the OS for reduced motion.
+// static content). Those same elements also get a magnetic pull, nudging
+// toward the pointer as it approaches and springing back on leave.
+// Disabled entirely on touch devices and for users who've asked the OS for
+// reduced motion.
 export function initCustomCursor() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -38,7 +42,11 @@ export function initCustomCursor() {
   const SPEED_MULTIPLIER = 0.04;
   // how much of the remaining distance to the real pointer position the dot
   // closes each frame — higher is snappier/less lag, 1 means no lag at all
-  const LERP_FACTOR = 1;
+  const LERP_FACTOR = 0.1;
+  // how far a magnetic element travels toward the pointer, as a fraction of
+  // the pointer's offset from the element's own center
+  const MAGNETIC_FACTOR = 0.2;
+  const MAGNETIC_EASE = 'outElastic(1, .3)';
 
   window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
@@ -128,6 +136,28 @@ export function initCustomCursor() {
 
     el.addEventListener('mouseleave', () => {
       cursor.classList.remove('is-cta');
+    });
+
+    el.addEventListener('mousemove', (event) => {
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      animate(el, {
+        x: (event.clientX - centerX) * MAGNETIC_FACTOR,
+        y: (event.clientY - centerY) * MAGNETIC_FACTOR,
+        duration: 600,
+        ease: MAGNETIC_EASE,
+      });
+    });
+
+    el.addEventListener('mouseleave', () => {
+      animate(el, {
+        x: 0,
+        y: 0,
+        duration: 600,
+        ease: MAGNETIC_EASE,
+      });
     });
   });
 }
