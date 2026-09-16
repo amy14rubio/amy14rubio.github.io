@@ -151,4 +151,18 @@ export function initCustomCursor() {
       if (magneticTargetEl === el) magneticTargetEl = null;
     });
   });
+
+  // magnetic pull only, no CTA-pill morph: nav links and tech-stack
+  // categories already show their own hover state (the sliding nav
+  // background, the accordion expanding), so the cursor should bend toward
+  // them without also turning into a labeled pill
+  document.querySelectorAll('nav a, .tech-category').forEach((el) => {
+    el.addEventListener('mouseenter', () => {
+      magneticTargetEl = el;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      if (magneticTargetEl === el) magneticTargetEl = null;
+    });
+  });
 }
