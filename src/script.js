@@ -80,7 +80,7 @@ links.forEach((link) => {
 // choice) — sync the icon to whatever theme actually ended up applied
 if (isDarkMode()) {
   icon.src = '/assets/icons/light-mode.svg';
-  icon.alt = 'light mode icon';
+  icon.alt = 'Light mode icon';
 }
 
 toggle.addEventListener('click', () => {
@@ -89,10 +89,10 @@ toggle.addEventListener('click', () => {
 
   if (isDarkMode()) {
     icon.src = '/assets/icons/light-mode.svg';
-    icon.alt = 'light mode icon';
+    icon.alt = 'Light mode icon';
   } else {
     icon.src = '/assets/icons/dark-mode.svg';
-    icon.alt = 'dark mode icon';
+    icon.alt = 'Dark mode icon';
   }
 });
 
