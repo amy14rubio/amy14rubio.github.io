@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Amyruth Rubio | Software Engineer</title>
     <link rel="stylesheet" href="/src/style.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✦</text></svg>"
@@ -673,6 +674,10 @@
               <input type="email" id="email" name="email" required />
               <label for="message">Message</label>
               <textarea name="message" id="message" rows="5"></textarea>
+              <!-- enable reCAPTCHA v2 for this form (mreqvagw) in the Formspree
+                   dashboard, then replace YOUR_RECAPTCHA_SITE_KEY below with the
+                   site key it gives you -->
+              <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
               <button type="submit">Send</button>
             </form>
           </div>
