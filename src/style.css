@@ -120,7 +120,7 @@ body {
   height: 100vh;
   z-index: -10;
   pointer-events: none;
-  background-image: url('/assets/grain-noise.jpg');
+  background-image: url('/assets/backgrounds/grain-noise.jpg');
   background-size: cover;
   mix-blend-mode: darken;
   opacity: 0.8;
@@ -647,7 +647,7 @@ h2 {
   transition: all 0.5s ease;
   border: 8px solid var(--text-color);
   padding: 20px;
-  background: url('/assets/tech-stack-bg.png');
+  background: url('/assets/backgrounds/tech-stack-bg.png');
   background-size: cover;
   background-color: var(--bg-white-color);
   background-blend-mode: darken;

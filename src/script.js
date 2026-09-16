@@ -79,7 +79,7 @@ links.forEach((link) => {
 // dark-mode before this module loaded (system preference or a saved
 // choice) — sync the icon to whatever theme actually ended up applied
 if (isDarkMode()) {
-  icon.src = '/assets/light-mode.svg';
+  icon.src = '/assets/icons/light-mode.svg';
   icon.alt = 'light mode icon';
 }
 
@@ -88,10 +88,10 @@ toggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDarkMode() ? 'dark' : 'light');
 
   if (isDarkMode()) {
-    icon.src = '/assets/light-mode.svg';
+    icon.src = '/assets/icons/light-mode.svg';
     icon.alt = 'light mode icon';
   } else {
-    icon.src = '/assets/dark-mode.svg';
+    icon.src = '/assets/icons/dark-mode.svg';
     icon.alt = 'dark mode icon';
   }
 });
