@@ -38,13 +38,13 @@ export function initCustomCursor() {
   // direction of travel; it relaxes back to a circle as it settles.
   const STRETCH_MAX_X = 0.5;
   const SQUASH_MAX_Y = 0.35;
-  const SPEED_MULTIPLIER = 0.04;
+  const SPEED_MULTIPLIER = 0.08;
   // how much of the remaining distance to the real pointer position the dot
   // closes each frame — higher is snappier/less lag, 1 means no lag at all
-  const LERP_FACTOR = 0.3;
+  const LERP_FACTOR = 0.2;
   // how strongly the cursor bends toward a hovered element's center instead
   // of the raw pointer position — 0 disables the pull, 1 snaps dead-center
-  const MAGNETIC_FACTOR = 0.4;
+  const MAGNETIC_FACTOR = 0.6;
   // magnetism only ever targets small, button-sized elements (below) —
   // pulling toward a large element's center (e.g. a whole nav link's hit
   // area or the tall tech-category panels) can drag the dot far from
