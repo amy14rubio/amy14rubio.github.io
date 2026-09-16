@@ -1,10 +1,9 @@
-import { animate } from 'animejs';
-
 // custom cursor: a small glowing "light source" that follows the mouse with
 // a bit of organic lag, and morphs into a contextual CTA pill when hovering
 // a genuinely interactive element (links/buttons only — never decorative or
-// static content). Those same elements also get a magnetic pull, nudging
-// toward the pointer as it approaches and springing back on leave.
+// static content). While hovering one of those elements, the cursor is also
+// magnetically drawn toward its center — the element itself never moves,
+// only the cursor's own tracked position bends toward it.
 // Disabled entirely on touch devices and for users who've asked the OS for
 // reduced motion.
 export function initCustomCursor() {
@@ -42,11 +41,12 @@ export function initCustomCursor() {
   const SPEED_MULTIPLIER = 0.04;
   // how much of the remaining distance to the real pointer position the dot
   // closes each frame — higher is snappier/less lag, 1 means no lag at all
-  const LERP_FACTOR = 0.1;
-  // how far a magnetic element travels toward the pointer, as a fraction of
-  // the pointer's offset from the element's own center
-  const MAGNETIC_FACTOR = 0.2;
-  const MAGNETIC_EASE = 'outElastic(1, .3)';
+  const LERP_FACTOR = 0.3;
+  // how strongly the cursor bends toward a hovered element's center instead
+  // of the raw pointer position — 0 disables the pull, 1 snaps dead-center
+  const MAGNETIC_FACTOR = 0.4;
+
+  let magneticTargetEl = null;
 
   window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
@@ -72,8 +72,19 @@ export function initCustomCursor() {
   window.addEventListener('mouseup', () => cursor.classList.remove('is-pressed'));
 
   const render = () => {
-    x += (mouseX - x) * LERP_FACTOR;
-    y += (mouseY - y) * LERP_FACTOR;
+    let targetX = mouseX;
+    let targetY = mouseY;
+
+    if (magneticTargetEl) {
+      const rect = magneticTargetEl.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      targetX = mouseX + (centerX - mouseX) * MAGNETIC_FACTOR;
+      targetY = mouseY + (centerY - mouseY) * MAGNETIC_FACTOR;
+    }
+
+    x += (targetX - x) * LERP_FACTOR;
+    y += (targetY - y) * LERP_FACTOR;
 
     const dx = x - prevX;
     const dy = y - prevY;
@@ -128,6 +139,7 @@ export function initCustomCursor() {
     el.addEventListener('mouseenter', (event) => {
       label.textContent = resolveLabel(el);
       cursor.classList.add('is-cta');
+      magneticTargetEl = el;
       // pill's max-width is 200px — flip it to grow leftward instead of
       // clipping off-screen when the cursor is close to the right edge
       const nearRightEdge = window.innerWidth - event.clientX < 200;
@@ -136,28 +148,7 @@ export function initCustomCursor() {
 
     el.addEventListener('mouseleave', () => {
       cursor.classList.remove('is-cta');
-    });
-
-    el.addEventListener('mousemove', (event) => {
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      animate(el, {
-        x: (event.clientX - centerX) * MAGNETIC_FACTOR,
-        y: (event.clientY - centerY) * MAGNETIC_FACTOR,
-        duration: 600,
-        ease: MAGNETIC_EASE,
-      });
-    });
-
-    el.addEventListener('mouseleave', () => {
-      animate(el, {
-        x: 0,
-        y: 0,
-        duration: 600,
-        ease: MAGNETIC_EASE,
-      });
+      if (magneticTargetEl === el) magneticTargetEl = null;
     });
   });
 }
