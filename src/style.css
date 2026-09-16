@@ -1377,6 +1377,34 @@ html.custom-cursor-active * {
   #cursor-light {
     display: none !important;
   }
+
+  /* touch devices never fire the mousemove that drives the hero title's
+     glowing/glitchy shadow in script.js, so .title falls back to a plain
+     single-layer shadow (see .title above) — this swaps in a fixed
+     snapshot of that same layered effect instead, at the offsets the JS
+     effect would produce for a mouse resting slightly off-center */
+  .title,
+  #hero h1,
+  #hero h3,
+  #hero h4 {
+    text-shadow:
+      -0.008em -0.002em 0 white,
+      0.016em 0.004em 0 rgba(93, 93, 93, 0.5),
+      0.032em 0.008em 0 rgba(93, 93, 93, 0.4),
+      0.048em 0.012em 0 rgba(93, 93, 93, 0.3),
+      0.064em 0.016em 0 rgba(93, 93, 93, 0.2);
+  }
+
+  body.dark-mode .title,
+  body.dark-mode #hero h1,
+  body.dark-mode #hero h3,
+  body.dark-mode #hero h4 {
+    -webkit-text-stroke: 5px var(--bg-white-color);
+    text-shadow:
+      0.0128em -0.0032em 0 rgba(255, 247, 8, 1),
+      0.048em 0.012em 0 rgba(255, 25, 60, 0.9),
+      -0.048em -0.012em 0 rgba(30, 225, 255, 0.9);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
