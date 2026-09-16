@@ -38,7 +38,7 @@ export function initCustomCursor() {
   const SPEED_MULTIPLIER = 0.04;
   // how much of the remaining distance to the real pointer position the dot
   // closes each frame — higher is snappier/less lag, 1 means no lag at all
-  const LERP_FACTOR = 1;
+  const LERP_FACTOR = 0.75;
 
   window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
