@@ -732,7 +732,7 @@ h2 {
 }
 
 .tech-category:hover {
-  flex: 0 0 10rem;
+  flex: 0 0 10.5rem;
 }
 
 .tech-category:hover .label-track {
@@ -740,7 +740,7 @@ h2 {
 }
 
 #tech-stack:has(.tech-category:hover) .tech-category:not(:hover) {
-  flex: 0 0 1.2rem;
+  flex: 0 0 1.1rem;
 }
 
 #tech-stack:has(.tech-category:hover) .tech-category:not(:hover) h4 {
@@ -776,7 +776,7 @@ h2 {
 }
 
 #tech-stack li:hover {
-  scale: 1.1;
+  scale: 1.2;
   translate: 0 -10%;
 }
 
@@ -1209,6 +1209,17 @@ body.dark-mode textarea {
 
   #tech-stack {
     scale: 1.2;
+  }
+
+  .tech-category ul {
+    font-size: 1.1rem;
+  }
+
+  /* Languages' 5 items push past the fixed hover height at this larger
+     font-size — shrink the heading slightly while open to free up room,
+     instead of shrinking the list text itself */
+  .tech-category:hover h4 {
+    font-size: 0.9em;
   }
 }
 

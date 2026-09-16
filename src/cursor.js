@@ -44,7 +44,7 @@ export function initCustomCursor() {
   const LERP_FACTOR = 0.3;
   // how strongly the cursor bends toward a hovered element's center instead
   // of the raw pointer position — 0 disables the pull, 1 snaps dead-center
-  const MAGNETIC_FACTOR = 0.4;
+  const MAGNETIC_FACTOR = 0.5;
 
   let magneticTargetEl = null;
 
