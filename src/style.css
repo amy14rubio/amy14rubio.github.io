@@ -1273,7 +1273,11 @@ html.custom-cursor-active * {
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
-  transition: all 0.25s ease;
+  /* only the show/hide fade should ease — position is set via `transform`
+     every animation frame in cursor.js, and transitioning `all` re-eased
+     each of those per-frame updates too, quietly re-adding lag on top of
+     whatever LERP_FACTOR was set to there */
+  transition: opacity 0.25s ease;
 }
 
 /* the plain idle glow — a separate element so its per-frame velocity-driven
