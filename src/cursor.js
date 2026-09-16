@@ -44,7 +44,12 @@ export function initCustomCursor() {
   const LERP_FACTOR = 0.3;
   // how strongly the cursor bends toward a hovered element's center instead
   // of the raw pointer position — 0 disables the pull, 1 snaps dead-center
-  const MAGNETIC_FACTOR = 0.5;
+  const MAGNETIC_FACTOR = 0.4;
+  // magnetism only ever targets small, button-sized elements (below) —
+  // pulling toward a large element's center (e.g. a whole nav link's hit
+  // area or the tall tech-category panels) can drag the dot far from
+  // wherever you're actually pointing inside it, which reads as the cursor
+  // "overshooting" rather than feeling controlled
 
   let magneticTargetEl = null;
 
@@ -148,20 +153,6 @@ export function initCustomCursor() {
 
     el.addEventListener('mouseleave', () => {
       cursor.classList.remove('is-cta');
-      if (magneticTargetEl === el) magneticTargetEl = null;
-    });
-  });
-
-  // magnetic pull only, no CTA-pill morph: nav links and tech-stack
-  // categories already show their own hover state (the sliding nav
-  // background, the accordion expanding), so the cursor should bend toward
-  // them without also turning into a labeled pill
-  document.querySelectorAll('nav a, .tech-category').forEach((el) => {
-    el.addEventListener('mouseenter', () => {
-      magneticTargetEl = el;
-    });
-
-    el.addEventListener('mouseleave', () => {
       if (magneticTargetEl === el) magneticTargetEl = null;
     });
   });
