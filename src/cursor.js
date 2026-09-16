@@ -36,6 +36,9 @@ export function initCustomCursor() {
   const STRETCH_MAX_X = 0.5;
   const SQUASH_MAX_Y = 0.35;
   const SPEED_MULTIPLIER = 0.04;
+  // how much of the remaining distance to the real pointer position the dot
+  // closes each frame — higher is snappier/less lag, 1 means no lag at all
+  const LERP_FACTOR = 0.55;
 
   window.addEventListener('mousemove', (event) => {
     mouseX = event.clientX;
@@ -61,8 +64,8 @@ export function initCustomCursor() {
   window.addEventListener('mouseup', () => cursor.classList.remove('is-pressed'));
 
   const render = () => {
-    x += (mouseX - x) * 0.18;
-    y += (mouseY - y) * 0.18;
+    x += (mouseX - x) * LERP_FACTOR;
+    y += (mouseY - y) * LERP_FACTOR;
 
     const dx = x - prevX;
     const dy = y - prevY;
