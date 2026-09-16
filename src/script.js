@@ -79,8 +79,8 @@ links.forEach((link) => {
 // dark-mode before this module loaded (system preference or a saved
 // choice) — sync the icon to whatever theme actually ended up applied
 if (isDarkMode()) {
-  icon.src = '/assets/light-mode.svg';
-  icon.alt = 'light mode icon';
+  icon.src = '/assets/icons/light-mode.svg';
+  icon.alt = 'Light mode icon';
 }
 
 toggle.addEventListener('click', () => {
@@ -88,11 +88,11 @@ toggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDarkMode() ? 'dark' : 'light');
 
   if (isDarkMode()) {
-    icon.src = '/assets/light-mode.svg';
-    icon.alt = 'light mode icon';
+    icon.src = '/assets/icons/light-mode.svg';
+    icon.alt = 'Light mode icon';
   } else {
-    icon.src = '/assets/dark-mode.svg';
-    icon.alt = 'dark mode icon';
+    icon.src = '/assets/icons/dark-mode.svg';
+    icon.alt = 'Dark mode icon';
   }
 });
 
@@ -258,7 +258,14 @@ document.querySelectorAll('.card-carousel').forEach((carousel) => {
 //main title shadow effect — skipped on touch/mobile, which get a static
 //text-shadow from CSS instead (see .title in style.css)
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  home.addEventListener('mousemove', (event) => {
+  //shared by the mousemove handler and the dark-mode toggle: pulled out so
+  //toggling the theme can recompute the shadow immediately using the last
+  //known pointer position, instead of leaving the previous theme's colors
+  //on screen until the pointer happens to move again
+  let lastPageX = window.innerWidth / 2;
+  let lastPageY = window.innerHeight / 2;
+
+  const updateTitleShadow = () => {
     title.forEach((el) => {
       const rect = el.getBoundingClientRect();
 
@@ -267,8 +274,8 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       const centerY = rect.top + rect.height / 2;
 
       //tighten or loosen cursor offset
-      const offsetX = (centerX - event.pageX) / 43000;
-      const offsetY = (centerY - event.pageY) / 100000;
+      const offsetX = (centerX - lastPageX) / 43000;
+      const offsetY = (centerY - lastPageY) / 100000;
 
       el.style.textShadow = `
         ${-offsetX.toFixed(3) * 0.5}em ${-offsetY.toFixed(3) * 0.5}em 0 white,
@@ -292,7 +299,15 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         `;
       }
     });
+  };
+
+  home.addEventListener('mousemove', (event) => {
+    lastPageX = event.pageX;
+    lastPageY = event.pageY;
+    updateTitleShadow();
   });
+
+  toggle.addEventListener('click', updateTitleShadow);
 }
 
 // email link

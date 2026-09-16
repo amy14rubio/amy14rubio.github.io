@@ -120,7 +120,7 @@ body {
   height: 100vh;
   z-index: -10;
   pointer-events: none;
-  background-image: url('/assets/grain-noise.jpg');
+  background-image: url('/assets/backgrounds/grain-noise.jpg');
   background-size: cover;
   mix-blend-mode: darken;
   opacity: 0.8;
@@ -647,7 +647,7 @@ h2 {
   transition: all 0.5s ease;
   border: 8px solid var(--text-color);
   padding: 20px;
-  background: url('/assets/tech-stack-bg.png');
+  background: url('/assets/backgrounds/tech-stack-bg.png');
   background-size: cover;
   background-color: var(--bg-white-color);
   background-blend-mode: darken;
@@ -732,7 +732,7 @@ h2 {
 }
 
 .tech-category:hover {
-  flex: 0 0 10rem;
+  flex: 0 0 10.5rem;
 }
 
 .tech-category:hover .label-track {
@@ -740,7 +740,7 @@ h2 {
 }
 
 #tech-stack:has(.tech-category:hover) .tech-category:not(:hover) {
-  flex: 0 0 1.2rem;
+  flex: 0 0 1.1rem;
 }
 
 #tech-stack:has(.tech-category:hover) .tech-category:not(:hover) h4 {
@@ -776,7 +776,7 @@ h2 {
 }
 
 #tech-stack li:hover {
-  scale: 1.1;
+  scale: 1.2;
   translate: 0 -10%;
 }
 
@@ -1212,7 +1212,14 @@ body.dark-mode textarea {
   }
 
   .tech-category ul {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+
+  /* Languages' 5 items push past the fixed hover height at this larger
+     font-size — shrink the heading slightly while open to free up room,
+     instead of shrinking the list text itself */
+  .tech-category:hover h4 {
+    font-size: 0.9em;
   }
 }
 
@@ -1266,7 +1273,11 @@ html.custom-cursor-active * {
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
-  transition: all 0.25s ease;
+  /* only the show/hide fade should ease — position is set via `transform`
+     every animation frame in cursor.js, and transitioning `all` re-eased
+     each of those per-frame updates too, quietly re-adding lag on top of
+     whatever LERP_FACTOR was set to there */
+  transition: opacity 0.25s ease;
 }
 
 /* the plain idle glow — a separate element so its per-frame velocity-driven
@@ -1365,6 +1376,34 @@ html.custom-cursor-active * {
 @media (hover: none), (pointer: coarse) {
   #cursor-light {
     display: none !important;
+  }
+
+  /* touch devices never fire the mousemove that drives the hero title's
+     glowing/glitchy shadow in script.js, so .title falls back to a plain
+     single-layer shadow (see .title above) — this swaps in a fixed
+     snapshot of that same layered effect instead, at the offsets the JS
+     effect would produce for a mouse resting slightly off-center */
+  .title,
+  #hero h1,
+  #hero h3,
+  #hero h4 {
+    text-shadow:
+      -0.008em -0.002em 0 white,
+      0.016em 0.004em 0 rgba(93, 93, 93, 0.5),
+      0.032em 0.008em 0 rgba(93, 93, 93, 0.4),
+      0.048em 0.012em 0 rgba(93, 93, 93, 0.3),
+      0.064em 0.016em 0 rgba(93, 93, 93, 0.2);
+  }
+
+  body.dark-mode .title,
+  body.dark-mode #hero h1,
+  body.dark-mode #hero h3,
+  body.dark-mode #hero h4 {
+    -webkit-text-stroke: 5px var(--bg-white-color);
+    text-shadow:
+      0.0128em -0.0032em 0 rgba(255, 247, 8, 1),
+      0.048em 0.012em 0 rgba(255, 25, 60, 0.9),
+      -0.048em -0.012em 0 rgba(30, 225, 255, 0.9);
   }
 }
 
