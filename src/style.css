@@ -530,6 +530,13 @@ h2 {
 @media (max-width: 767px) {
   #about-toggle-title {
     cursor: default;
+    /* #about-content-container (max-width: 80vw) auto-centers itself
+       inside .container-center (max-width: 90vw), which insets the
+       paragraph text by (90vw - 80vw) / 2 = 5vw from the container's own
+       left edge. The title sits directly in .container-center with no
+       such inset, so without this it starts 5vw to the left of the text
+       below it — this matches it to that same starting position. */
+    margin-left: 5vw;
   }
 }
 

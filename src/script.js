@@ -333,9 +333,9 @@ const masonry = new Masonry(grid, {
 // early; clicking the title stops the idle cycle for good (see the "stop"
 // call from initAboutHobbiesToggle's toggle() below).
 const DISPERSE_TRANSFORMS = [
-  { y: 0.05, rot: -2 },
+  { y: 0.01, rot: -2 },
   { y: -0.1, rot: -1 },
-  { y: 0.1, rot: 1 },
+  { y: 0.05, rot: 2 },
   { y: -0.05, rot: -2 },
   { y: 0.1, rot: 2 },
   { y: -0.1, rot: 1 },
@@ -345,7 +345,7 @@ const DISPERSE_TRANSFORMS = [
 // how far apart adjacent letters end up, in em — unlike y/rotation (hand-
 // picked per letter above for character), x is derived from each letter's
 // position so the horizontal gaps stay even regardless of word length
-const DISPERSE_SPACING_EM = 0.05;
+const DISPERSE_SPACING_EM = 0.2;
 
 function wrapTitleChars(el, text) {
   el.textContent = '';
@@ -354,8 +354,6 @@ function wrapTitleChars(el, text) {
     const span = document.createElement('span');
     span.className = 'disperse-char';
     const t = DISPERSE_TRANSFORMS[i % DISPERSE_TRANSFORMS.length];
-    // anchored on the first letter (i === 0 stays at dx: 0) instead of
-    // spreading symmetrically from the word's center
     const dx = i * DISPERSE_SPACING_EM;
     span.style.setProperty('--dx', `${dx}em`);
     span.style.setProperty('--dy', `${t.y}em`);
