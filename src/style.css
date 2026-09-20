@@ -511,6 +511,68 @@ h2 {
   margin-inline: auto;
 }
 
+/* clickable "About" / "Hobbies" toggle title */
+#about-toggle-title {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  cursor: pointer;
+  user-select: none;
+}
+
+#about-toggle-title:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+}
+
+/* the About/Hobbies toggle is disabled on mobile (see IS_MOBILE_VIEWPORT in
+   script.js) — no pointer cursor for a title that no longer does anything */
+@media (max-width: 767px) {
+  #about-toggle-title {
+    cursor: default;
+  }
+}
+
+/* idle "disperse" hint on the About title, before it's ever clicked — each
+   letter drifts apart to a per-letter offset (set inline as --dx/--dy/--drot
+   custom properties, see wrapTitleChars in script.js), then settles back.
+   Hovering while dispersed closes it early (see initAboutTitleDisperse). */
+.disperse-char {
+  display: inline-block;
+  transition: transform 0.75s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+#about-toggle-title.is-dispersed .disperse-char {
+  transform: translate(var(--dx), var(--dy)) rotate(var(--drot));
+}
+
+/* About / Hobbies panel crossfade — .is-fading is toggled by JS just long
+   enough to fade the current panel out, swap which one is display:none,
+   then fade the new one in (display can't be transitioned directly) */
+#about-content-container,
+#hidden-about-me {
+  transition: opacity 0.35s ease;
+  opacity: 1;
+}
+
+#about.is-fading #about-content-container,
+#about.is-fading #hidden-about-me {
+  opacity: 0;
+}
+
+#about:not(.is-hobbies-view) #hidden-about-me {
+  display: none;
+}
+
+#about.is-hobbies-view #about-content-container {
+  display: none;
+}
+
+#about.is-hobbies-view .container-center {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
 #about,
 #contact {
   position: relative;
@@ -780,6 +842,507 @@ h2 {
   translate: 0 -10%;
 }
 
+/* hidden about me */
+#albums img {
+  width: 100px;
+}
+
+#books-shows img {
+  width: 90px;
+}
+
+.grid {
+  background: transparent;
+}
+
+.grid-sizer {
+  width: 5%;
+}
+
+#cell-items,
+#fav-shows-cell {
+  width: calc(25% - 1rem);
+}
+
+#graphic-designs-cell {
+  width: calc(40% - 1rem);
+}
+
+#video-editing-cell,
+#video-cell {
+  width: calc(35% - 1rem);
+}
+
+#cell-items {
+  height: calc(14rem - 0.5rem);
+  margin-bottom: 1rem;
+}
+
+#fav-shows-cell {
+  height: 18rem;
+}
+
+#video-editing-cell {
+  height: calc(18rem - 0.5rem);
+  margin-bottom: 1rem;
+}
+
+#video-cell {
+  height: 14rem;
+}
+
+.grid-item {
+  position: relative;
+  float: left;
+  /* margin: 4px; */
+  /* background: transparent; */
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid var(--white-color);
+  border-radius: 5px;
+}
+
+/* label overlays that cover each hobbies-grid cell until clicked, then
+   slide away in a per-cell direction to reveal the content underneath.
+   Re-covered every time Hobbies view is opened (see initCellOverlays). */
+.cell-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  background-color: rgba(20, 20, 20, 0.5);
+  backdrop-filter: blur(20px) saturate(150%);
+  color: var(--white-color);
+  font-family: var(--h2-font);
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.6s ease;
+}
+
+.cell-overlay--left.is-revealed {
+  transform: translateX(-100%);
+}
+
+.cell-overlay--right.is-revealed {
+  transform: translateX(100%);
+}
+
+.cell-overlay--up.is-revealed {
+  transform: translateY(-100%);
+}
+
+.cell-overlay--down.is-revealed {
+  transform: translateY(100%);
+}
+
+.cell-overlay.is-revealed {
+  pointer-events: none;
+}
+
+/* .grid-item--height-short {
+  height: 15rem;
+} */
+/* .grid-item--height-long {
+  height: 18rem;
+} */
+.grid-item--height-full {
+  height: calc(33rem - 0.5rem);
+}
+
+/* ── Items: photo gallery ──────────────────────────────────── */
+#cell-items {
+  position: relative;
+  overflow: hidden;
+  background-color: #111;
+}
+
+/* was the vinyl-disc player's slot — now a marquee of autoplaying,
+   muted video-editing clips. Same technique as #fav-shows-cell's anime
+   marquee (duplicate <ul> for a seamless loop), but videos keep their own
+   natural aspect ratio (fixed height, intrinsic width) instead of being
+   cropped into uniform tiles, since clips vary between portrait/landscape. */
+#video-editing-cell {
+  position: relative;
+  overflow: hidden;
+}
+
+#video-editing-cell .marquee-container {
+  background-color: transparent;
+  height: 100%;
+}
+
+#video-editing-cell .marquee-container li {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#video-editing-cell .marquee-container video {
+  height: 100%;
+  width: auto;
+  display: block;
+  /* a video with no decoded frame yet paints nothing, letting whatever is
+     behind it (the cell's own translucent background) show through as a
+     visible "gap" — black is the least jarring thing to show for that
+     brief moment instead, since it reads as "still loading" rather than
+     a hole in the layout */
+  background-color: #000;
+}
+
+/* lives inside #video-cell below; hidden 1x1 host for the actual YouTube
+   iframe that both drives and is invisible behind the reel card's own UI */
+#yt-hidden-player {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Video Show Reel Player ──────────────────────────────────
+   YouTube playlist player (see initShowReelPlayer in script.js), skinned
+   as a "now playing" card. */
+
+#video-cell {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+.reel-player {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-family: var(--text-font);
+  color: #fffefb;
+}
+
+/* groups the title/thumbnail row and the progress/controls row so they
+   center as one block within the card, instead of being pinned to its
+   opposite top/bottom edges */
+.reel-content {
+  position: relative;
+  width: 70%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+}
+
+.reel-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #2a2a2a;
+  background-size: 200%;
+  background-position: center;
+  /* the cover image itself, just a little dimmer/flatter behind the card's
+     text and controls — no blur, per the reference look */
+  filter: contrast(0.4) brightness(0.95) saturate(2);
+  transition: background-image 0.3s ease;
+}
+
+/* separate from .reel-bg so this gradient never inherits its filter —
+   keeps title/controls legible regardless of how bright the thumbnail is */
+.reel-overlay {
+  position: absolute;
+  inset: 0;
+  /* background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 70%); */
+}
+
+.reel-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.reel-thumb {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 8px;
+  background-color: #c9b49a;
+  background-size: 200%;
+  background-position: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.reel-info {
+  min-width: 0;
+}
+
+.reel-title {
+  font-family: var(--h2-font);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* plain state: no room to reveal, so an ellipsis is the fallback truncation
+   until script.js measures it and (if it's actually too long to fit)
+   swaps in the continuous marquee loop below instead */
+.reel-title-text {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+.reel-title-track {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+/* the duplicate copy (aria-hidden) is what makes the loop seamless — as
+   the real copy scrolls fully offscreen, this one arrives to take its
+   exact place. Hidden entirely until script.js confirms overflow. */
+#reel-title-text-dup {
+  display: none;
+  padding-left: 2.5rem;
+}
+
+/* only applied once script.js confirms the title overflows its box —
+   short titles that already fit never get this, per the reel-title's own
+   overflow:hidden clipping the rest anyway */
+.reel-title.is-marquee .reel-title-text {
+  text-overflow: clip;
+  max-width: none;
+}
+
+.reel-title.is-marquee #reel-title-text-dup {
+  display: inline-block;
+}
+
+/* keyframes named here are generated per-title by script.js (see
+   applyTitleMarquee) as a <style> tag, not defined statically — the pause
+   at the end is a fixed number of seconds, but the scroll portion's
+   duration depends on the title's width, so what fraction of the total
+   loop the pause occupies is different every time. Keyframe percentages
+   can't reference a custom property, so there's no way to express that
+   with a single static @keyframes rule. */
+.reel-title.is-marquee .reel-title-track {
+  animation: reel-title-loop-dynamic var(--marquee-duration, 12s) ease-in-out infinite;
+}
+
+.reel-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.reel-bottom {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* a larger invisible hit-area for dragging, separate from the thin visible
+   line below — giving *this* element both the height needed for an easy
+   drag target and a border-radius/background-clip combo for the visible
+   pill fought each other: the radius is computed against this element's
+   full (tall) border box, then background-clip crops it down to a thin
+   content-box, leaving a lopsided arc instead of a clean pill */
+.reel-progress-track {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+/* the actual visible (unfilled) line — its own small box, so its
+   border-radius describes a real pill instead of being computed against
+   the taller hit-area above */
+.reel-progress-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  bottom: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+.reel-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 0%;
+  border-radius: 999px;
+  background: rgb(255, 255, 255);
+  pointer-events: none;
+}
+
+.reel-progress-handle {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.reel-time {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.reel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.reel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.15s;
+  padding: 0;
+}
+
+.reel-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.reel-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: #fffefb;
+}
+
+/* cutout look: instead of drawing a dark icon on top of the white circle,
+   punch a hole shaped like the icon out of the circle itself, so whatever
+   is behind (the dimmed video) shows through. Two mask layers — a solid
+   layer covering the whole button, and the icon — combined with
+   mask-composite: exclude (their overlap, i.e. the icon shape, becomes
+   transparent; everywhere else stays opaque). Swapped between play/pause
+   via the .is-playing class (see reelPlayBtn.classList.toggle in
+   script.js) instead of swapping an inner <svg>, since the hole itself
+   *is* the icon — there's nothing left to draw on top. */
+.reel-btn--play {
+  width: 28px;
+  height: 28px;
+  background: rgb(255, 255, 255);
+  -webkit-mask-image:
+    linear-gradient(#000, #000),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center, center;
+  -webkit-mask-size:
+    100% 100%,
+    20px 20px;
+  -webkit-mask-composite: xor;
+  mask-image:
+    linear-gradient(#000, #000),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-position: center, center;
+  mask-size:
+    100% 100%,
+    20px 20px;
+  mask-composite: exclude;
+}
+
+.reel-btn--play.is-playing {
+  -webkit-mask-image:
+    linear-gradient(#000, #000),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E");
+  mask-image:
+    linear-gradient(#000, #000),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E");
+}
+
+.reel-btn--play:hover {
+  background: #fffefb;
+}
+
+/* graphic designs carousel cell */
+
+#graphic-designs-cell {
+  position: relative;
+  overflow: hidden;
+  background-color: #111;
+}
+
+/* shared by the graphic-designs carousel and the photo gallery below — same
+   crossfade behavior, just different slide classes/image sets */
+.designs-carousel,
+.pictures-carousel {
+  position: absolute;
+  inset: 0;
+}
+
+.designs-slide,
+.pictures-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.designs-slide.is-active,
+.pictures-slide.is-active {
+  opacity: 1;
+}
+
+/* fav shows/books grid cell */
+
+#fav-shows-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+#fav-shows-cell .marquee-container {
+  background-color: transparent;
+  height: 100%;
+}
+
+#fav-shows-cell .marquee-container li {
+  padding: 0;
+}
+
+#fav-shows-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* work section */
 
 #work .container-center {
@@ -887,6 +1450,7 @@ h2 {
   display: flex;
   background-color: var(--bg-white-color);
   width: 100%;
+  height: 50%;
   overflow: hidden;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -911,10 +1475,37 @@ h2 {
   animation-play-state: paused;
 }
 
+/* video editing + favorite shows: pause on press-and-hold instead of
+   hover, matching the photo/graphic-design carousels (see
+   initMarqueePressPause in script.js) — the :hover rule above still
+   applies to every other marquee (project card tech tickers, etc.) */
+#video-editing-cell .marquee-container:hover ul,
+#fav-shows-cell .marquee-container:hover ul {
+  animation-play-state: running;
+}
+
+#video-editing-cell .marquee-container.is-pressed ul,
+#fav-shows-cell .marquee-container.is-pressed ul {
+  animation-play-state: paused;
+}
+
 @keyframes marquee {
   to {
     transform: translateX(-100%);
   }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.marquee--reverse {
+  animation-name: marquee-reverse;
 }
 
 /* card links */
@@ -1220,6 +1811,13 @@ body.dark-mode textarea {
      instead of shrinking the list text itself */
   .tech-category:hover h4 {
     font-size: 0.9em;
+  }
+
+  /* the hobbies grid needs more room than the About text/tech stack, so the
+     whole #about column widens to match it while that view is showing,
+     instead of the grid alone poking out past a narrower parent */
+  #about.is-hobbies-view .container-center {
+    max-width: 75vw;
   }
 }
 

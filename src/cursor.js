@@ -131,15 +131,24 @@ export function initCustomCursor() {
 
     if (el.tagName === 'BUTTON' && el.type === 'submit') return "Let's go!";
 
+    if (el.id === 'about-toggle-title') {
+      return el.getAttribute('aria-pressed') === 'true' ? 'Back to About!' : 'See my hobbies!';
+    }
+
     if (el.target === '_blank') return 'Check it out!';
 
     return 'Click me!';
   };
 
-  document.querySelectorAll('a, button').forEach((el) => {
+  document.querySelectorAll('a, button, #about-toggle-title').forEach((el) => {
     // nav links and the header logo already communicate interactivity on
     // their own (sliding pill, italic script) — skip the CTA morph there
     if (el.closest('nav') || el.closest('header h1')) return;
+
+    // script.js strips role/tabindex from the About title when the
+    // toggle's disabled (mobile viewport) — don't show a CTA pill for a
+    // click that no longer does anything
+    if (el.id === 'about-toggle-title' && !el.hasAttribute('role')) return;
 
     el.addEventListener('mouseenter', (event) => {
       label.textContent = resolveLabel(el);
