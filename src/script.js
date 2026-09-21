@@ -542,6 +542,237 @@ initCellOverlays();
 // *within* cellId specifically (not document-wide) so each cell keeps its
 // own independent current-slide/pause state, even though both use this
 // same function.
+// ── Image lightbox ────────────────────────────────────────────
+// a single shared modal, opened by clicking a carousel's active slide.
+// Shows the image at its native size, only ever shrunk (never upscaled)
+// to fit the viewport — no forced max-width box like a typical lightbox.
+function initImageLightbox() {
+  const overlay = document.createElement('div');
+  overlay.className = 'media-lightbox';
+  overlay.setAttribute('aria-hidden', 'true');
+  overlay.innerHTML = `
+    <button class="lightbox-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <img class="lightbox-media" alt="" />
+    <button class="lightbox-nav lightbox-next" aria-label="Next image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  `;
+  document.body.appendChild(overlay);
+
+  const img = overlay.querySelector('.lightbox-media');
+  const closeBtn = overlay.querySelector('.lightbox-close');
+  const prevBtn = overlay.querySelector('.lightbox-prev');
+  const nextBtn = overlay.querySelector('.lightbox-next');
+
+  let slides = [];
+  let index = 0;
+  let onCloseCallback = null;
+
+  function render() {
+    const slide = slides[index];
+    img.src = slide.src;
+    img.alt = slide.alt || '';
+    const showNav = slides.length > 1;
+    prevBtn.style.display = showNav ? '' : 'none';
+    nextBtn.style.display = showNav ? '' : 'none';
+  }
+
+  function handleKeydown(event) {
+    if (event.key === 'Escape') close();
+    else if (event.key === 'ArrowRight') next();
+    else if (event.key === 'ArrowLeft') prev();
+  }
+
+  function open(slideEls, startIndex, { onClose } = {}) {
+    slides = slideEls;
+    index = startIndex;
+    onCloseCallback = onClose || null;
+    render();
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', handleKeydown);
+  }
+
+  function close() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', handleKeydown);
+    if (onCloseCallback) onCloseCallback();
+  }
+
+  function next(event) {
+    event?.stopPropagation();
+    index = (index + 1) % slides.length;
+    render();
+  }
+
+  function prev(event) {
+    event?.stopPropagation();
+    index = (index - 1 + slides.length) % slides.length;
+    render();
+  }
+
+  // clicking the backdrop (anywhere but the image/buttons) closes it
+  overlay.addEventListener('click', close);
+  img.addEventListener('click', (event) => event.stopPropagation());
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  return { open, close };
+}
+
+const imageLightbox = initImageLightbox();
+
+// ── Video lightbox (video-editing marquee) ──────────────────────
+// clicking a marquee clip opens it enlarged (native size, capped to the
+// viewport, same rule as the image lightbox) and unmuted, and freezes
+// the marquee's scroll while open. The marquee renders two copies of the
+// clip list (one aria-hidden, for the seamless loop) — every video in
+// both copies opens the lightbox, but next/prev only ever cycles through
+// the 11 unique clips.
+function initVideoLightbox(cellId) {
+  const cell = document.getElementById(cellId);
+  const container = cell?.querySelector('.marquee-container');
+  if (!cell || !container) return;
+
+  const uniqueVideos = Array.from(
+    container.querySelectorAll('ul.marquee:not([aria-hidden]) video'),
+  );
+  if (!uniqueVideos.length) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'media-lightbox';
+  overlay.setAttribute('aria-hidden', 'true');
+  overlay.innerHTML = `
+    <button class="lightbox-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <video class="lightbox-media" loop playsinline controls></video>
+    <button class="lightbox-nav lightbox-next" aria-label="Next video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  `;
+  document.body.appendChild(overlay);
+
+  const video = overlay.querySelector('.lightbox-media');
+  const closeBtn = overlay.querySelector('.lightbox-close');
+  const prevBtn = overlay.querySelector('.lightbox-prev');
+  const nextBtn = overlay.querySelector('.lightbox-next');
+
+  let index = 0;
+  // once the user manually unmutes one clip, later clips in this same
+  // modal session (via next/prev) open unmuted too — reset back to muted
+  // the next time the lightbox is opened fresh (see close())
+  let unmutedThisSession = false;
+
+  video.addEventListener('volumechange', () => {
+    unmutedThisSession = !video.muted;
+    // duck the music player while this clip has audible sound, restore it
+    // the instant that's no longer true (muted again, or closed below)
+    if (video.muted) {
+      showReelPlayer.restoreVolume();
+    } else {
+      showReelPlayer.duckVolume();
+    }
+  });
+
+  function render() {
+    const clip = uniqueVideos[index];
+    // the marquee's own <video src> points at the muted, autoplay-safe
+    // copy (public/assets/video-editing-muted/) — data-full-src points at
+    // the version with real audio (public/assets/video-editing/) for the
+    // enlarged view
+    video.src = clip.dataset.fullSrc || clip.src;
+    video.setAttribute('aria-label', clip.getAttribute('aria-label') || '');
+    // matches the music player's normal level (70/100 there, same value
+    // on HTMLMediaElement's 0-1 scale) so unmuting doesn't jump-scare the
+    // user with full-volume audio
+    video.volume = 0.7;
+    // opens muted the first time, same as the marquee — the native
+    // controls' volume button lets the user unmute it themselves
+    video.muted = !unmutedThisSession;
+    video.play().catch(() => {});
+    const showNav = uniqueVideos.length > 1;
+    prevBtn.style.display = showNav ? '' : 'none';
+    nextBtn.style.display = showNav ? '' : 'none';
+  }
+
+  function handleKeydown(event) {
+    if (event.key === 'Escape') close();
+    else if (event.key === 'ArrowRight') next();
+    else if (event.key === 'ArrowLeft') prev();
+  }
+
+  function open(startIndex) {
+    index = startIndex;
+    render();
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    container.classList.add('is-lightbox-frozen');
+    document.addEventListener('keydown', handleKeydown);
+  }
+
+  function close() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    video.pause();
+    // closing while still unmuted wouldn't otherwise fire volumechange
+    showReelPlayer.restoreVolume();
+    unmutedThisSession = false;
+    container.classList.remove('is-lightbox-frozen');
+    document.removeEventListener('keydown', handleKeydown);
+  }
+
+  function next(event) {
+    event?.stopPropagation();
+    index = (index + 1) % uniqueVideos.length;
+    render();
+  }
+
+  function prev(event) {
+    event?.stopPropagation();
+    index = (index - 1 + uniqueVideos.length) % uniqueVideos.length;
+    render();
+  }
+
+  overlay.addEventListener('click', close);
+  video.addEventListener('click', (event) => event.stopPropagation());
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  container.querySelectorAll('video').forEach((clip) => {
+    clip.addEventListener('click', () => {
+      const matchIndex = uniqueVideos.findIndex((v) => v.src === clip.src);
+      open(matchIndex === -1 ? 0 : matchIndex);
+    });
+  });
+}
+
+initVideoLightbox('video-editing-cell');
+
+// ── Image Carousels (graphic designs, photo gallery) ─────────
 function initImageCarousel(cellId, slideClass) {
   const cell = document.getElementById(cellId);
   const slides = cell ? cell.querySelectorAll(`.${slideClass}`) : [];
@@ -549,6 +780,7 @@ function initImageCarousel(cellId, slideClass) {
 
   let current = 0;
   let paused = false;
+  let lightboxOpen = false;
 
   function advance() {
     slides[current].classList.remove('is-active');
@@ -557,7 +789,7 @@ function initImageCarousel(cellId, slideClass) {
   }
 
   setInterval(() => {
-    if (!paused) advance();
+    if (!paused && !lightboxOpen) advance();
   }, 5000);
 
   cell.addEventListener('mousedown', () => {
@@ -575,6 +807,18 @@ function initImageCarousel(cellId, slideClass) {
   });
   document.addEventListener('touchend', () => {
     paused = false;
+  });
+
+  cell.addEventListener('click', (event) => {
+    // the cell-overlay's own reveal click bubbles up here too — don't
+    // also pop the lightbox open on that same first click
+    if (event.target.closest('.cell-overlay')) return;
+    lightboxOpen = true;
+    imageLightbox.open(Array.from(slides), current, {
+      onClose: () => {
+        lightboxOpen = false;
+      },
+    });
   });
 }
 
@@ -604,6 +848,26 @@ initMarqueePressPause('fav-shows-cell');
 // ── Video Show Reel Player (YouTube IFrame API) ──────────────
 const showReelPlayer = (function initShowReelPlayer() {
   const PLAYLIST_ID = 'PLkIkhBY7AJp9S-9rwPhwH27q_anVDpcrt';
+  const NORMAL_VOLUME = 70;
+  // ducks near-silent (rather than fully to 0) while a video-editing clip
+  // is unmuted, and fades back up once it isn't — see duckVolume/
+  // restoreVolume below, driven by the video lightbox's mute state
+  const DUCKED_VOLUME = 5;
+  const VOLUME_FADE_MS = 1000;
+  const VOLUME_FADE_STEPS = 20;
+  let volumeFadeIntervalId = null;
+
+  function fadeVolumeTo(target) {
+    if (!player || !playerReady) return;
+    clearInterval(volumeFadeIntervalId);
+    const start = player.getVolume();
+    let step = 0;
+    volumeFadeIntervalId = setInterval(() => {
+      step += 1;
+      player.setVolume(Math.round(start + (target - start) * (step / VOLUME_FADE_STEPS)));
+      if (step >= VOLUME_FADE_STEPS) clearInterval(volumeFadeIntervalId);
+    }, VOLUME_FADE_MS / VOLUME_FADE_STEPS);
+  }
 
   const reelBg = document.getElementById('reel-bg');
   const reelThumb = document.getElementById('reel-thumb');
@@ -620,6 +884,10 @@ const showReelPlayer = (function initShowReelPlayer() {
   const reelTime = document.getElementById('reel-time');
 
   let player = null;
+  // `player` exists as soon as `new YT.Player(...)` returns, but its API
+  // methods (getVolume, setVolume, etc.) aren't actually callable until
+  // onReady fires — this guards fadeVolumeTo against calling them early
+  let playerReady = false;
   let isPlaying = false;
   let isSeeking = false;
   // the player loads asynchronously (YouTube iframe API script fetch +
@@ -817,7 +1085,8 @@ const showReelPlayer = (function initShowReelPlayer() {
       },
       events: {
         onReady(e) {
-          e.target.setVolume(70);
+          playerReady = true;
+          e.target.setVolume(NORMAL_VOLUME);
           if (playRequested) {
             playRequested = false;
             e.target.playVideo();
@@ -891,6 +1160,14 @@ const showReelPlayer = (function initShowReelPlayer() {
     // the cell is actually visible
     remeasureTitle() {
       applyTitleMarquee();
+    },
+    // ducked while a video-editing clip is unmuted in its lightbox, so the
+    // two audio sources don't compete (see initVideoLightbox)
+    duckVolume() {
+      fadeVolumeTo(DUCKED_VOLUME);
+    },
+    restoreVolume() {
+      fadeVolumeTo(NORMAL_VOLUME);
     },
   };
 })();

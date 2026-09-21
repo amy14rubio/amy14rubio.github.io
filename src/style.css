@@ -961,11 +961,83 @@ h2 {
   height: calc(33rem - 0.5rem);
 }
 
+/* ── Media lightbox (click a carousel slide/marquee clip to enlarge) ── */
+.media-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  background-color: rgba(255, 254, 251, 0.95);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.media-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.dark-mode .media-lightbox {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+/* never upscaled past its real size — only shrunk to fit the viewport */
+.lightbox-media {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 5px;
+  cursor: default;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  padding: 0.5rem;
+}
+
+body.dark-mode .lightbox-close,
+body.dark-mode .lightbox-nav {
+  color: var(--white-color);
+}
+
+.lightbox-close svg,
+.lightbox-nav svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.lightbox-close {
+  top: 1rem;
+  right: 1rem;
+}
+
+.lightbox-prev {
+  left: 1rem;
+}
+
+.lightbox-next {
+  right: 1rem;
+}
+
 /* ── Items: photo gallery ──────────────────────────────────── */
 #cell-items {
   position: relative;
   overflow: hidden;
   background-color: #111;
+  cursor: pointer;
 }
 
 /* was the vinyl-disc player's slot — now a marquee of autoplaying,
@@ -1297,6 +1369,7 @@ h2 {
   position: relative;
   overflow: hidden;
   background-color: #111;
+  cursor: pointer;
 }
 
 /* shared by the graphic-designs carousel and the photo gallery below — same
@@ -1494,6 +1567,18 @@ h2 {
 #video-editing-cell .marquee-container.is-pressed ul,
 #fav-shows-cell .marquee-container.is-pressed ul {
   animation-play-state: paused;
+}
+
+/* frozen while a clip is open in the lightbox (see initVideoLightbox) —
+   a separate class from .is-pressed since that one gets cleared by a
+   page-wide mouseup listener, which would wrongly resume the marquee the
+   moment you click a button inside the open lightbox */
+#video-editing-cell .marquee-container.is-lightbox-frozen ul {
+  animation-play-state: paused;
+}
+
+#video-editing-cell .marquee-container video {
+  cursor: pointer;
 }
 
 @keyframes marquee {
