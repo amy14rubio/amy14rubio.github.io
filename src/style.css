@@ -1617,6 +1617,18 @@ body.dark-mode .lightbox-nav {
 #contact .container-center {
   min-height: 110vh;
   margin-top: 6rem;
+  padding-bottom: 0;
+}
+
+/* mobile has no room to push the copyright bar down via margin-top the
+   way desktop/tablet do — give #contact its bottom padding back so it
+   doesn't end flush against the viewport edge. Placed after the
+   unconditional rule above (equal specificity) so it actually wins the
+   cascade at this width instead of being silently overridden by it. */
+@media (max-width: 767px) {
+  #contact .container-center {
+    padding-bottom: 5rem;
+  }
 }
 
 #contact a {
@@ -1660,6 +1672,21 @@ textarea {
 
 #contact button:active {
   scale: 0.98;
+}
+
+#footer-bottom {
+  width: 100%;
+  text-align: center;
+}
+
+#footer-bottom p {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+#footer-bottom a {
+  color: inherit;
+  text-decoration: underline;
 }
 
 #find-me-info ul {
@@ -1770,6 +1797,10 @@ body.dark-mode textarea {
   .container-center {
     min-height: 90vh;
     font-size: 1.3rem;
+  }
+
+  #footer-bottom {
+    margin-top: 6rem;
   }
 
   nav {

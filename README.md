@@ -1,23 +1,64 @@
 # Portfolio
 
-### Technical Concept Mastery
+My personal portfolio site, built to showcase my work as a developer alongside some of the things I enjoy outside of code. I wanted the site to feel like an extension of my personality rather than a standard portfolio template, so it includes both my projects and a few of my creative interests.
 
-One technical concept I developed greater mastery over was the use of the `::before` pseudo-element in CSS. My mental model of this concept is that `::before` allows you to create a styled element that exists before the content of a target element without altering the element’s main structure. This is useful for creating decorative overlays, backgrounds, or layered effects while keeping the HTML clean and maintaining the element’s original layout.
+**Live site:** [amyruth-rubio.web.app](https://amyruth-rubio.web.app)
 
-In my project, I used `::before` to create wavy decorative overlays for different sections of the site. By applying the wave effect to the pseudo-element instead of the section itself, I was able to style it independently, ensuring the waves acted purely as visual enhancements without affecting the content or spacing of the sections.
+<img width="1280" height="595" alt="Portfolio homepage" src="https://github.com/user-attachments/assets/261c9967-10f3-4fbf-852c-ca3799f6a5d1" />
 
-### Challenging Project Requirement
+## Design & Experience
 
-One project requirement I found challenging was designing the hero section, which sets the theme and first impression for the website. I wanted the hero section to be visually engaging, so I decided to implement a cursor-responsive text-shadow effect for the title. This feature required combining CSS styling with precise JavaScript calculations.
+The site is built entirely with vanilla HTML, CSS, and JavaScript, giving me full control over the interactions and visual details.
 
-I based my implementation on a CodePen example: [Animated Eyes Follower Cursor](https://codepen.io/teeange-programmer/pen/WNKvyNY). Instead of applying the effect to the entire window, I attached the event listener to the `home` section using `home.addEventListener('mousemove', …)`. This ensured the effect only triggers when the cursor is within the hero section, improving performance and focusing the interaction.
+Some of the interactive features include a custom cursor that changes into contextual labels and magnetically follows interactive elements, a hero title with a cursor-reactive shadow, and scroll-triggered reveal animations throughout the site.
 
-Next, I assigned the title element’s dimensions to `const rect` and calculated the center of the title. These center coordinates are used to determine the cursor’s relative position to the title, which in turn calculates `offsetX` and `offsetY` parameters, controlling how far each text-shadow moves in response to cursor movement. Dividing `(centerX - event.pageX)` by different numbers allows fine-tuning of the shadow’s tightness or looseness.
+The About section can also be flipped into a Hobbies section featuring photography, graphic design, video editing, and anime recommendations. Each hobby card has its own hover interaction, and most cards open into a lightbox for a closer look. On mobile, the flip interaction is disabled to keep the experience better suited for touch screens.
 
-Finally, I styled the `text-shadow` property of the title element. The first shadow functions as a white highlight that moves opposite the cursor to simulate a light source. The remaining shadows are progressively darker greys with decreasing opacity, creating a layered, 3D effect. Each offset is rounded with `toFixed()` and multiplied to control spacing between shadow layers, producing a smooth, visually appealing response to cursor movement.
+## Tech Stack
 
-### AI Usage
+**Frontend:** HTML, CSS, JavaScript <br>
+**Build Tool:** Vite <br>
+**Animation:** anime.js <br>
+**Deployment:** Firebase Hosting <br>
+**Development Tools:** Git
 
-This project provided me an opportunity to build with AI as a collaborative tool. I primarily used AI to implement stretch features, including advanced hover effects, scroll-based UI behavior, dynamic navigation, and CSS enhancements such as overlays and clip-path designs.
+## Getting Started
 
-Check out my [AI Usage Document](https://docs.google.com/document/d/1nCg1vsm6g7sLwAA4lGUPGwLD-5Y2g_pe8AEdM1tnqEo/edit?usp=sharing) to see the prompts, responses, and how I refined and integrated each solution.
+```bash
+git clone https://github.com/amy14rubio/amy14rubio.github.io.git
+cd amy14rubio.github.io
+npm install
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Deployment
+
+The site is deployed to [Firebase Hosting](https://firebase.google.com/docs/hosting). `firebase.json` points Hosting at the `dist/` folder Vite builds, and `.firebaserc` sets the default project.
+
+If you clone this to build your own site off of it, swap in your own Firebase project first:
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase use --add          # pick your own Firebase project, replaces .firebaserc
+npm run build
+firebase deploy --only hosting
+```
+
+## AI-Assisted Development
+
+I used AI as a collaborative tool throughout this project, especially for stretch features I wouldn't have attempted alone: the magnetic custom cursor, the hover/CTA behavior, the scroll-reveal system, and getting the responsive layout right across mobile, tablet, and desktop. I directed the actual decisions, what a feature should do and how it should feel, tested everything in the browser myself, and iterated when something didn't match what I wanted.
+
+Check out my [AI Usage Document](https://docs.google.com/document/d/1nCg1vsm6g7sLwAA4lGUPGwLD-5Y2g_pe8AEdM1tnqEo/edit?usp=sharing) for the prompts, responses, and how I refined and integrated each solution.
+
+## Permissions
+
+This repo is [MIT licensed](LICENSE), so feel free to use parts of the code for learning or as a starting point for your own projects. If you're using the site's design or structure, I'd encourage you to make it your own rather than reproducing the portfolio as-is. If you're using the site's design largely unmodified, I'd appreciate being credited as the original designer!
+
+The MIT license applies only to the site's source code. The photography, video edits, graphic designs, and other creative work featured on the site are my original work and are not covered by the MIT license. Please don't reuse, redistribute, or present these materials as your own without permission.
