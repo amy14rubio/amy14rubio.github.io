@@ -530,12 +530,22 @@ h2 {
 @media (max-width: 767px) {
   #about-toggle-title {
     cursor: default;
-    /* #about-content-container (max-width: 80vw) auto-centers itself
-       inside .container-center (max-width: 90vw), which insets the
-       paragraph text by (90vw - 80vw) / 2 = 5vw from the container's own
-       left edge. The title sits directly in .container-center with no
-       such inset, so without this it starts 5vw to the left of the text
-       below it — this matches it to that same starting position. */
+  }
+}
+
+/* #about-content-container (max-width: 80vw) auto-centers itself inside
+   .container-center (max-width: 90vw below the 1024px desktop
+   breakpoint), which insets the paragraph text by (90vw - 80vw) / 2 = 5vw
+   from the container's own left edge. The title sits directly in
+   .container-center with no such inset, so without this it starts 5vw to
+   the left of the text below it — this matches it to that same starting
+   position. Applies through tablet too, not just mobile, since
+   .container-center's 90vw max-width holds all the way up to 1024px;
+   past that .container-center narrows to 65vw, which becomes the binding
+   constraint instead of #about-content-container's 80vw, so both line up
+   naturally on desktop without this. */
+@media (max-width: 1023px) {
+  #about-toggle-title {
     margin-left: 5vw;
   }
 }
