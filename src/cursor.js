@@ -140,6 +140,37 @@ export function initCustomCursor() {
     return 'Click me!';
   };
 
+  // shared by both the link/button CTA pill and the hobbies-cell captions
+  // below — `autoHideMs`, if given, hides the pill after that long even if
+  // still hovering (a timed caption rather than a persistent CTA)
+  function attachCtaHover(el, getLabel, { autoHideMs, magnetic = true } = {}) {
+    let autoHideTimeoutId = null;
+
+    el.addEventListener('mouseenter', (event) => {
+      label.textContent = getLabel(el);
+      cursor.classList.add('is-cta');
+      if (magnetic) magneticTargetEl = el;
+      // pill's max-width is 200px — flip it to grow leftward instead of
+      // clipping off-screen when the cursor is close to the right edge
+      const nearRightEdge = window.innerWidth - event.clientX < 200;
+      cursor.classList.toggle('is-cta-flip', nearRightEdge);
+
+      if (autoHideMs) {
+        clearTimeout(autoHideTimeoutId);
+        autoHideTimeoutId = setTimeout(() => {
+          cursor.classList.remove('is-cta');
+          if (magneticTargetEl === el) magneticTargetEl = null;
+        }, autoHideMs);
+      }
+    });
+
+    el.addEventListener('mouseleave', () => {
+      clearTimeout(autoHideTimeoutId);
+      cursor.classList.remove('is-cta');
+      if (magneticTargetEl === el) magneticTargetEl = null;
+    });
+  }
+
   document.querySelectorAll('a, button, #about-toggle-title').forEach((el) => {
     // nav links and the header logo already communicate interactivity on
     // their own (sliding pill, italic script) — skip the CTA morph there
@@ -150,19 +181,33 @@ export function initCustomCursor() {
     // click that no longer does anything
     if (el.id === 'about-toggle-title' && !el.hasAttribute('role')) return;
 
-    el.addEventListener('mouseenter', (event) => {
-      label.textContent = resolveLabel(el);
-      cursor.classList.add('is-cta');
-      magneticTargetEl = el;
-      // pill's max-width is 200px — flip it to grow leftward instead of
-      // clipping off-screen when the cursor is close to the right edge
-      const nearRightEdge = window.innerWidth - event.clientX < 200;
-      cursor.classList.toggle('is-cta-flip', nearRightEdge);
-    });
+    // common playback icons (play/pause, prev, next) — the user already
+    // knows these are clickable, so skip the CTA morph entirely
+    if (el.classList.contains('cursor-skip')) return;
 
-    el.addEventListener('mouseleave', () => {
-      cursor.classList.remove('is-cta');
-      if (magneticTargetEl === el) magneticTargetEl = null;
+    attachCtaHover(el, resolveLabel);
+  });
+
+  // hobbies-grid cells: a descriptive caption (not an action prompt) that
+  // shows for a fixed 3s on hover, then disappears even if still hovering
+  // — covers the cell whether its reveal overlay is still showing or the
+  // content underneath has already been revealed
+  const HOBBIES_CAPTIONS = {
+    photography: 'Edited in Lightroom!',
+    'graphic-designs-cell': "A few designs I've made",
+    'video-editing-cell': 'Lost in edit',
+    'anime-picks': 'Highly recommend!',
+    'music-player': '•*¨*•.¸¸♬︎',
+  };
+
+  Object.keys(HOBBIES_CAPTIONS).forEach((cellId) => {
+    const cell = document.getElementById(cellId);
+    if (!cell) return;
+    attachCtaHover(cell, () => HOBBIES_CAPTIONS[cellId], {
+      autoHideMs: 3000,
+      // the magnetic pull toward this cell's center fights with actually
+      // landing clicks on the small play/pause/prev/next buttons inside it
+      magnetic: cellId !== 'music-player',
     });
   });
 }

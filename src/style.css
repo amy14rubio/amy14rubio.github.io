@@ -866,8 +866,8 @@ h2 {
   width: 5%;
 }
 
-#cell-items,
-#fav-shows-cell {
+#photography,
+#anime-picks {
   width: calc(25% - 1rem);
 }
 
@@ -876,16 +876,16 @@ h2 {
 }
 
 #video-editing-cell,
-#video-cell {
+#music-player {
   width: calc(35% - 1rem);
 }
 
-#cell-items {
+#photography {
   height: calc(14rem - 0.5rem);
   margin-bottom: 1rem;
 }
 
-#fav-shows-cell {
+#anime-picks {
   height: 18rem;
 }
 
@@ -894,7 +894,7 @@ h2 {
   margin-bottom: 1rem;
 }
 
-#video-cell {
+#music-player {
   height: 14rem;
 }
 
@@ -970,7 +970,7 @@ h2 {
   align-items: center;
   justify-content: center;
   padding: 3rem;
-  background-color: rgba(255, 254, 251, 0.95);
+  background-color: rgba(181, 181, 181, 0.95);
   opacity: 0;
   visibility: hidden;
   transition:
@@ -1033,7 +1033,7 @@ body.dark-mode .lightbox-nav {
 }
 
 /* ── Items: photo gallery ──────────────────────────────────── */
-#cell-items {
+#photography {
   position: relative;
   overflow: hidden;
   background-color: #111;
@@ -1041,7 +1041,7 @@ body.dark-mode .lightbox-nav {
 }
 
 /* was the vinyl-disc player's slot — now a marquee of autoplaying,
-   muted video-editing clips. Same technique as #fav-shows-cell's anime
+   muted video-editing clips. Same technique as #anime-picks's anime
    marquee (duplicate <ul> for a seamless loop), but videos keep their own
    natural aspect ratio (fixed height, intrinsic width) instead of being
    cropped into uniform tiles, since clips vary between portrait/landscape. */
@@ -1074,7 +1074,7 @@ body.dark-mode .lightbox-nav {
   background-color: #000;
 }
 
-/* lives inside #video-cell below; hidden 1x1 host for the actual YouTube
+/* lives inside #music-player below; hidden 1x1 host for the actual YouTube
    iframe that both drives and is invisible behind the reel card's own UI */
 #yt-hidden-player {
   position: absolute;
@@ -1089,7 +1089,7 @@ body.dark-mode .lightbox-nav {
    YouTube playlist player (see initShowReelPlayer in script.js), skinned
    as a "now playing" card. */
 
-#video-cell {
+#music-player {
   position: relative;
   overflow: hidden;
   padding: 0;
@@ -1401,23 +1401,23 @@ body.dark-mode .lightbox-nav {
 
 /* fav shows/books grid cell */
 
-#fav-shows-cell {
+#anime-picks {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
 }
 
-#fav-shows-cell .marquee-container {
+#anime-picks .marquee-container {
   background-color: transparent;
   height: 100%;
 }
 
-#fav-shows-cell .marquee-container li {
+#anime-picks .marquee-container li {
   padding: 0;
 }
 
-#fav-shows-cell img {
+#anime-picks img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1560,12 +1560,12 @@ body.dark-mode .lightbox-nav {
    initMarqueePressPause in script.js) — the :hover rule above still
    applies to every other marquee (project card tech tickers, etc.) */
 #video-editing-cell .marquee-container:hover ul,
-#fav-shows-cell .marquee-container:hover ul {
+#anime-picks .marquee-container:hover ul {
   animation-play-state: running;
 }
 
 #video-editing-cell .marquee-container.is-pressed ul,
-#fav-shows-cell .marquee-container.is-pressed ul {
+#anime-picks .marquee-container.is-pressed ul {
   animation-play-state: paused;
 }
 

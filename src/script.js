@@ -478,7 +478,7 @@ function initAboutHobbiesToggle() {
         document
           .querySelectorAll('#hobbies-grid .cell-overlay')
           .forEach((overlay) => overlay.classList.remove('is-revealed'));
-        // the reel's title-overflow check may have run while #video-cell
+        // the reel's title-overflow check may have run while #music-player
         // was still hidden — now that it's visible, remeasure
         showReelPlayer.remeasureTitle();
       } else {
@@ -519,7 +519,7 @@ initAboutHobbiesToggle();
 // initAboutHobbiesToggle).
 function initCellOverlays() {
   document.querySelectorAll('#hobbies-grid .cell-overlay').forEach((overlay) => {
-    const isReelCell = overlay.closest('.grid-item').id === 'video-cell';
+    const isReelCell = overlay.closest('.grid-item').id === 'music-player';
     const reveal = () => {
       overlay.classList.add('is-revealed');
       if (isReelCell) showReelPlayer.playFirstTrack();
@@ -823,7 +823,7 @@ function initImageCarousel(cellId, slideClass) {
 }
 
 initImageCarousel('graphic-designs-cell', 'designs-slide');
-initImageCarousel('cell-items', 'pictures-slide');
+initImageCarousel('photography', 'pictures-slide');
 
 // ── Marquee press-to-pause (video editing, favorite shows) ───────
 // these two marquees pause on press-and-hold instead of hover, matching
@@ -843,7 +843,7 @@ function initMarqueePressPause(cellId) {
 }
 
 initMarqueePressPause('video-editing-cell');
-initMarqueePressPause('fav-shows-cell');
+initMarqueePressPause('anime-picks');
 
 // ── Video Show Reel Player (YouTube IFrame API) ──────────────
 const showReelPlayer = (function initShowReelPlayer() {
@@ -1138,7 +1138,7 @@ const showReelPlayer = (function initShowReelPlayer() {
   reelPrevBtn.addEventListener('click', () => player && player.previousVideo());
   reelNextBtn.addEventListener('click', () => player && player.nextVideo());
 
-  // #video-cell's width is percentage-based, so how much (if any) the
+  // #music-player's width is percentage-based, so how much (if any) the
   // title overflows can change on resize
   window.addEventListener('resize', applyTitleMarquee);
 
@@ -1154,7 +1154,7 @@ const showReelPlayer = (function initShowReelPlayer() {
       }
     },
     // the first track's title gets measured for overflow as soon as it's
-    // cued (see the onReady poll below), but #video-cell is still
+    // cued (see the onReady poll below), but #music-player is still
     // display:none behind the About view at that point, so the measured
     // width is 0 and the marquee never gets added — remeasure now that
     // the cell is actually visible
