@@ -37,6 +37,20 @@ Build for production:
 npm run build
 ```
 
+## Deployment
+
+The site is deployed to [Firebase Hosting](https://firebase.google.com/docs/hosting). `firebase.json` points Hosting at the `dist/` folder Vite builds, and `.firebaserc` sets the default project.
+
+If you clone this to build your own site off of it, swap in your own Firebase project first:
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase use --add          # pick your own Firebase project, replaces .firebaserc
+npm run build
+firebase deploy --only hosting
+```
+
 ## AI-Assisted Development
 
 I used AI as a collaborative tool throughout this project, especially for stretch features I wouldn't have attempted alone: the magnetic custom cursor, the hover/CTA behavior, the scroll-reveal system, and getting the responsive layout right across mobile, tablet, and desktop. I directed the actual decisions, what a feature should do and how it should feel, tested everything in the browser myself, and iterated when something didn't match what I wanted.
